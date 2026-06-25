@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English Level Up - Aprenda Inglês Jogando</title>
+  <title>SpeakSquad - Level Up Your English</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -66,12 +66,25 @@
       align-items: center;
     }
 
-    .logo {
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .logo-img {
+      height: 40px;
+      width: auto;
+    }
+
+    .logo-text {
       font-family: var(--font-display);
-      font-size: 1.8rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      color: var(--primary);
-      text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       letter-spacing: 2px;
     }
 
@@ -111,6 +124,62 @@
     .nav-buttons {
       display: flex;
       gap: 1rem;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: rgba(5, 8, 16, 0.98);
+      border-bottom: 1px solid var(--border-color);
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .mobile-menu.active {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      padding: 0.8rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .mobile-menu a:hover {
+      color: var(--primary);
     }
 
     .btn {
@@ -205,7 +274,6 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
     }
 
     .hero-text p {
@@ -213,6 +281,15 @@
       color: var(--text-secondary);
       margin-bottom: 2rem;
       line-height: 1.8;
+    }
+
+    .tagline {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 1rem;
     }
 
     .cta-group {
@@ -235,38 +312,10 @@
       justify-content: center;
     }
 
-    .game-icon {
+    .logo-hero {
       width: 100%;
       height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 217, 255, 0.05);
-      border: 2px solid var(--border-color);
-      border-radius: 8px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .game-icon::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(45deg, transparent 30%, rgba(0, 217, 255, 0.1) 50%, transparent 70%);
-      animation: shimmer 3s infinite;
-    }
-
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .game-icon i {
-      font-size: 120px;
-      color: var(--primary);
-      text-shadow: 0 0 40px rgba(0, 217, 255, 0.6);
-      position: relative;
-      z-index: 1;
+      object-fit: contain;
     }
 
     /* FEATURES SECTION */
@@ -362,11 +411,26 @@
       padding: 0 2rem;
     }
 
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      margin-top: 3rem;
+    .pricing-scroll-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      scroll-behavior: smooth;
+    }
+
+    .pricing-scroll-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .pricing-scroll-container::-webkit-scrollbar-track {
+      background: rgba(0, 217, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .pricing-scroll-container::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
     }
 
     .pricing-card {
@@ -378,6 +442,8 @@
       position: relative;
       display: flex;
       flex-direction: column;
+      min-width: 280px;
+      flex-shrink: 0;
     }
 
     .pricing-card.featured {
@@ -505,6 +571,30 @@
       line-height: 1.7;
     }
 
+    /* FOOTER */
+    footer {
+      margin-top: 6rem;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border-color);
+      background: rgba(5, 8, 16, 0.8);
+      text-align: center;
+    }
+
+    footer p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    footer a:hover {
+      text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+    }
+
     /* FORMS */
     .auth-container {
       max-width: 400px;
@@ -599,157 +689,6 @@
       transform: translateY(-2px);
     }
 
-    /* FOOTER */
-    footer {
-      margin-top: 6rem;
-      padding: 3rem 2rem;
-      border-top: 1px solid var(--border-color);
-      background: rgba(5, 8, 16, 0.8);
-      text-align: center;
-    }
-
-    footer p {
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-    }
-
-    footer a {
-      color: var(--primary);
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-
-    footer a:hover {
-      text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .hero-content {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-text h1 {
-        font-size: 2rem;
-      }
-
-      .hero-visual {
-        height: 250px;
-      }
-
-      .game-icon i {
-        font-size: 80px;
-      }
-
-      nav ul {
-        gap: 1rem;
-      }
-
-      .nav-buttons {
-        gap: 0.5rem;
-      }
-
-      .btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.85rem;
-      }
-
-      .pricing-card.featured {
-        transform: scale(1);
-      }
-
-      .section-title {
-        font-size: 2rem;
-      }
-    }
-
-    /* ANIMATIONS */
-    @keyframes glow {
-      0%, 100% { text-shadow: 0 0 20px rgba(0, 217, 255, 0.5); }
-      50% { text-shadow: 0 0 40px rgba(0, 217, 255, 0.8); }
-    }
-
-    .glow-text {
-      animation: glow 2s ease-in-out infinite;
-    }
-
-    /* DASHBOARD PREVIEW */
-    .dashboard-section {
-      max-width: 1200px;
-      margin: 6rem auto;
-      padding: 0 2rem;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .stat-card {
-      background: rgba(26, 31, 58, 0.6);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .stat-icon {
-      width: 60px;
-      height: 60px;
-      background: rgba(0, 217, 255, 0.1);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      color: var(--primary);
-    }
-
-    .stat-content h3 {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .stat-content .stat-value {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .lesson-card {
-      background: rgba(26, 31, 58, 0.6);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin-top: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .lesson-info h4 {
-      color: var(--primary);
-      margin-bottom: 0.3rem;
-    }
-
-    .lesson-info p {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-
-    .lesson-time {
-      text-align: right;
-      color: var(--success);
-      font-weight: 600;
-      font-family: var(--font-mono);
-    }
-
     /* MODAL */
     .modal {
       display: none;
@@ -794,31 +733,93 @@
     .modal-close:hover {
       transform: rotate(90deg);
     }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero-content {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-text h1 {
+        font-size: 2rem;
+      }
+
+      .hero-visual {
+        height: 250px;
+      }
+
+      .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .pricing-card.featured {
+        transform: scale(1);
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .pricing-scroll-container {
+        margin: 0 -2rem;
+        padding: 1rem 2rem;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
   <!-- HEADER -->
   <header>
     <nav>
-      <div class="logo">ELU</div>
-      <ul>
+      <div class="logo-container">
+        <img src="https://raw.githubusercontent.com/projektista/Speaksquad/refs/heads/main/assets/logo.jpg" alt="SpeakSquad Logo" class="logo-img">
+        <span class="logo-text">SpeakSquad</span>
+      </div>
+      <ul id="navMenu">
         <li><a href="#home">Home</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#how">Como Funciona</a></li>
       </ul>
-      <div class="nav-buttons">
+      <div class="nav-buttons" id="navButtons">
         <button class="btn btn-secondary" onclick="openModal('loginModal')">Login</button>
         <button class="btn btn-primary" onclick="openModal('signupModal')">Registrar</button>
       </div>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#home">Home</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#how">Como Funciona</a>
+      <button class="btn btn-secondary" onclick="openModal('loginModal'); toggleMenu()">Login</button>
+      <button class="btn btn-primary" onclick="openModal('signupModal'); toggleMenu()">Registrar</button>
+    </div>
   </header>
 
   <!-- HERO SECTION -->
   <section class="hero" id="home">
     <div class="hero-content">
       <div class="hero-text">
-        <h1 class="glow-text">Aprenda Inglês Jogando</h1>
+        <div class="tagline">Level Up Your English</div>
+        <h1>Aprenda Inglês Jogando</h1>
         <p>Aulas 1-on-1 personalizadas de inglês jogando. Minecraft, Fortnite e muito mais. Créditos sem expiry. Seu horário, sua regra.</p>
         <div class="cta-group">
           <button class="btn btn-primary btn-lg" onclick="openModal('signupModal')">Começar Agora</button>
@@ -826,16 +827,14 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="game-icon">
-          <i class="fas fa-gamepad"></i>
-        </div>
+        <img src="https://raw.githubusercontent.com/projektista/Speaksquad/refs/heads/main/assets/logo.jpg" alt="SpeakSquad" class="logo-hero">
       </div>
     </div>
   </section>
 
   <!-- FEATURES SECTION -->
   <section class="features" id="features">
-    <h2 class="section-title">Por que English Level Up?</h2>
+    <h2 class="section-title">Por que SpeakSquad?</h2>
     <p class="section-subtitle">Aulas personalizadas, flexíveis e eficazes</p>
     
     <div class="feature-grid">
@@ -918,9 +917,9 @@
   <!-- PRICING SECTION -->
   <section class="pricing" id="pricing">
     <h2 class="section-title">Pacotes de Créditos</h2>
-    <p class="section-subtitle">1 crédito = 1 aula de 50 minutos</p>
+    <p class="section-subtitle">1 crédito = 1 aula de 50 minutos. Deslize para ver mais →</p>
     
-    <div class="pricing-grid">
+    <div class="pricing-scroll-container">
       <div class="pricing-card">
         <div class="pricing-name">Unitário</div>
         <div class="pricing-amount">1</div>
@@ -962,78 +961,13 @@
     </div>
   </section>
 
-  <!-- DASHBOARD PREVIEW -->
-  <section class="dashboard-section">
-    <h2 class="section-title">Seu Dashboard</h2>
-    <p class="section-subtitle">Tudo que você precisa em um só lugar</p>
-    
-    <div class="dashboard-grid">
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-coins"></i>
-        </div>
-        <div class="stat-content">
-          <h3>Créditos Disponíveis</h3>
-          <div class="stat-value">28</div>
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-calendar"></i>
-        </div>
-        <div class="stat-content">
-          <h3>Próxima Aula</h3>
-          <div class="stat-value">Hoje, 10 AM</div>
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">
-          <i class="fas fa-graduation-cap"></i>
-        </div>
-        <div class="stat-content">
-          <h3>Aulas Concluídas</h3>
-          <div class="stat-value">12</div>
-        </div>
-      </div>
-    </div>
-
-    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-family: var(--font-display);">Suas Próximas Aulas</h3>
-    
-    <div class="lesson-card">
-      <div class="lesson-info">
-        <h4>English Level Up Class</h4>
-        <p>Minecraft - Intermediate Level</p>
-      </div>
-      <div class="lesson-time">Hoje, 10:00 AM</div>
-    </div>
-
-    <div class="lesson-card">
-      <div class="lesson-info">
-        <h4>English Level Up Class</h4>
-        <p>Fortnite - Conversation</p>
-      </div>
-      <div class="lesson-time">Amanhã, 3:00 PM</div>
-    </div>
-
-    <div class="lesson-card">
-      <div class="lesson-info">
-        <h4>English Level Up Class</h4>
-        <p>Minecraft - Grammar Focus</p>
-      </div>
-      <div class="lesson-time">Jan 28, 6:00 PM</div>
-    </div>
-  </section>
-
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2025 English Level Up. Aprenda inglês jogando com um professor dedicado.</p>
+    <p>&copy; 2025 SpeakSquad. Level Up Your English.</p>
     <p>
       <a href="#privacy">Privacidade</a> | 
       <a href="#terms">Termos</a> | 
-      <a href="#contact">Contato</a> | 
-      <a href="#feedback">Feedback</a>
+      <a href="#contact">Contato</a>
     </p>
   </footer>
 
@@ -1111,29 +1045,16 @@
   <div class="modal" id="purchaseModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('purchaseModal')">&times;</button>
-      <h2 style="color: var(--primary); margin-bottom: 1.5rem; font-family: var(--font-display);">Escolha o Método de Pagamento</h2>
+      <h2 style="color: var(--primary); margin-bottom: 1.5rem; font-family: var(--font-display);">Escolha o Pacote</h2>
       <form>
         <div class="form-group">
           <label>Pacote</label>
           <select required>
             <option value="">Selecione um pacote</option>
-            <option value="basic">Basic - 10 créditos ($30)</option>
-            <option value="plus">Plus - 30 créditos ($75)</option>
-            <option value="pro">Pro - 60 créditos ($120)</option>
+            <option value="unitario">Unitário - 1 crédito (¥2.000)</option>
+            <option value="medio">Médio - 5 créditos (¥8.500)</option>
+            <option value="grande">Grande - 10 créditos (¥14.000)</option>
           </select>
-        </div>
-        <div class="form-group">
-          <label>Método de Pagamento</label>
-          <div class="checkbox-group">
-            <div class="checkbox-item">
-              <input type="radio" id="stripe" name="payment" value="stripe">
-              <label for="stripe">Stripe (Cartão de Crédito)</label>
-            </div>
-            <div class="checkbox-item">
-              <input type="radio" id="paypal" name="payment" value="paypal">
-              <label for="paypal">PayPal</label>
-            </div>
-          </div>
         </div>
         <button type="submit" class="form-submit">Prosseguir para Pagamento</button>
       </form>
@@ -1147,6 +1068,13 @@
 
     function closeModal(modalId) {
       document.getElementById(modalId).classList.remove('active');
+    }
+
+    function toggleMenu() {
+      const hamburger = document.getElementById('hamburger');
+      const mobileMenu = document.getElementById('mobileMenu');
+      hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
     }
 
     window.addEventListener('click', function(event) {
