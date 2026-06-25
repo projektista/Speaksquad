@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Level Up - Aprenda Inglês Jogando</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #00d9ff;
+      --secondary: #ff006e;
+      --accent: #ff5e7e;
+      --dark-bg: #0a0e27;
+      --darker-bg: #050810;
+      --card-bg: #1a1f3a;
+      --border-color: #2a3a5a;
+      --text-primary: #f0f0f0;
+      --text-secondary: #b0b0b0;
+      --success: #00d9a3;
+      --warning: #ff9500;
+      --danger: #ff006e;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --font-display: 'Space Mono', monospace;
+      --font-body: 'Outfit', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* HEADER/NAV */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(5, 8, 16, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+      letter-spacing: 2px;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border: 1px solid var(--primary);
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #00a8cc);
+      color: var(--dark-bg);
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 30px rgba(0, 217, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 217, 255, 0.1);
+      box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      margin-top: 60px;
+      min-height: calc(100vh - 60px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 217, 255, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: 5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255, 0, 110, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text h1 {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+    }
+
+    .hero-text p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .btn-lg {
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+    }
+
+    .hero-visual {
+      position: relative;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .game-icon {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 217, 255, 0.05);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(0, 217, 255, 0.1) 50%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .game-icon i {
+      font-size: 120px;
+      color: var(--primary);
+      text-shadow: 0 0 40px rgba(0, 217, 255, 0.6);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* FEATURES SECTION */
+    .features {
+      max-width: 1200px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 3rem;
+      font-size: 1.1rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .feature-card {
+      background: rgba(26, 31, 58, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .feature-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 30px rgba(0, 217, 255, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .feature-card:hover::before {
+      left: 100%;
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      height: 60px;
+      text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+    }
+
+    .feature-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+      font-family: var(--font-display);
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    /* PRICING SECTION */
+    .pricing {
+      max-width: 1200px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .pricing-card {
+      background: linear-gradient(135deg, rgba(26, 31, 58, 0.9), rgba(42, 58, 90, 0.5));
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--primary);
+      box-shadow: 0 0 40px rgba(0, 217, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--dark-bg);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .pricing-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .pricing-amount {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+      font-family: var(--font-display);
+    }
+
+    .pricing-currency {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 2rem;
+      flex-grow: 1;
+    }
+
+    .pricing-features li {
+      padding: 0.6rem 0;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .pricing-card .btn {
+      width: 100%;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    /* HOW IT WORKS */
+    .how-it-works {
+      max-width: 1200px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+      position: relative;
+    }
+
+    .step {
+      position: relative;
+      padding: 2rem;
+      background: rgba(26, 31, 58, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--dark-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(0, 217, 255, 0.4);
+    }
+
+    .step h3 {
+      margin-top: 1.5rem;
+      margin-bottom: 0.8rem;
+      color: var(--primary);
+      font-family: var(--font-display);
+    }
+
+    .step p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* FORMS */
+    .auth-container {
+      max-width: 400px;
+      margin: 60px auto;
+      padding: 2rem;
+      background: rgba(26, 31, 58, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.8rem;
+      background: rgba(10, 14, 39, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+      background: rgba(10, 14, 39, 0.8);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .checkbox-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    .checkbox-item label {
+      margin: 0;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--primary), #00a8cc);
+      color: var(--dark-bg);
+      border: none;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-submit:hover {
+      box-shadow: 0 0 30px rgba(0, 217, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 6rem;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border-color);
+      background: rgba(5, 8, 16, 0.8);
+      text-align: center;
+    }
+
+    footer p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    footer a:hover {
+      text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-text h1 {
+        font-size: 2rem;
+      }
+
+      .hero-visual {
+        height: 250px;
+      }
+
+      .game-icon i {
+        font-size: 80px;
+      }
+
+      nav ul {
+        gap: 1rem;
+      }
+
+      .nav-buttons {
+        gap: 0.5rem;
+      }
+
+      .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .pricing-card.featured {
+        transform: scale(1);
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+
+    /* ANIMATIONS */
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px rgba(0, 217, 255, 0.5); }
+      50% { text-shadow: 0 0 40px rgba(0, 217, 255, 0.8); }
+    }
+
+    .glow-text {
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    /* DASHBOARD PREVIEW */
+    .dashboard-section {
+      max-width: 1200px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      background: rgba(26, 31, 58, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 217, 255, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+
+    .stat-content h3 {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-content .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .lesson-card {
+      background: rgba(26, 31, 58, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .lesson-info h4 {
+      color: var(--primary);
+      margin-bottom: 0.3rem;
+    }
+
+    .lesson-info p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .lesson-time {
+      text-align: right;
+      color: var(--success);
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, var(--card-bg), rgba(42, 58, 90, 0.5));
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <nav>
+      <div class="logo">ELU</div>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#how">Como Funciona</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="openModal('loginModal')">Login</button>
+        <button class="btn btn-primary" onclick="openModal('signupModal')">Registrar</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="glow-text">Aprenda Inglês Jogando</h1>
+        <p>Aulas 1-on-1 personalizadas de inglês jogando. Minecraft, Fortnite e muito mais. Créditos sem expiry. Seu horário, sua regra.</p>
+        <div class="cta-group">
+          <button class="btn btn-primary btn-lg" onclick="openModal('signupModal')">Começar Agora</button>
+          <button class="btn btn-secondary btn-lg" onclick="document.getElementById('features').scrollIntoView()">Saiba Mais</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="game-icon">
+          <i class="fas fa-gamepad"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="features" id="features">
+    <h2 class="section-title">Por que English Level Up?</h2>
+    <p class="section-subtitle">Aulas personalizadas, flexíveis e eficazes</p>
+    
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-chalkboard-user"></i>
+        </div>
+        <h3>Professor Dedicado</h3>
+        <p>Aulas personalizadas com um único professor que conhece seu progresso e objetivo. Educação focada no seu sucesso.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-cube"></i>
+        </div>
+        <h3>Learning Through Gaming</h3>
+        <p>Aprenda enquanto joga. Minecraft e Fortnite não são apenas jogos - são ferramentas pedagógicas comprovadas.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-coins"></i>
+        </div>
+        <h3>Sistema de Créditos</h3>
+        <p>1 crédito = 1 aula de 50 minutos. Compre o que precisar. Sem mensalidades, sem expiry de créditos.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <h3>Flexibilidade Total</h3>
+        <p>Agende aulas no seu horário. Suporta Tokyo e Brasília. Assista quando for bom para você.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h3>Segurança</h3>
+        <p>Plataforma confiável para educação. Seus dados privados e pagamentos 100% seguros via Stripe.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-book"></i>
+        </div>
+        <h3>Aprendizado Estruturado</h3>
+        <p>Acompanhamento de progresso e feedback personalizado. Conteúdo adaptado ao seu nível e objetivos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works" id="how">
+    <h2 class="section-title">Como Funciona</h2>
+    <p class="section-subtitle">3 passos simples para começar sua jornada</p>
+    
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Registre-se</h3>
+        <p>Crie sua conta com email ou Google. Escolha seu nível de inglês (Beginner, Intermediate, Advanced).</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Compre Créditos</h3>
+        <p>Escolha um pacote: 1, 5 ou 10 créditos. Pague via Stripe. Seguro e rápido.</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Agende sua Aula</h3>
+        <p>Escolha um horário disponível. Receba link Zoom. Tenha sua aula! 1 crédito = 50 minutos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION -->
+  <section class="pricing" id="pricing">
+    <h2 class="section-title">Pacotes de Créditos</h2>
+    <p class="section-subtitle">1 crédito = 1 aula de 50 minutos</p>
+    
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-name">Unitário</div>
+        <div class="pricing-amount">1</div>
+        <div class="pricing-currency">crédito = ¥2.000</div>
+        <ul class="pricing-features">
+          <li>1 aula de 50 min</li>
+          <li>Flexibilidade total</li>
+          <li>Sem expiry</li>
+        </ul>
+        <button class="btn btn-secondary" onclick="openModal('purchaseModal')">Comprar Agora</button>
+      </div>
+      
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Mais Popular</div>
+        <div class="pricing-name">Pacote Médio</div>
+        <div class="pricing-amount">5</div>
+        <div class="pricing-currency">créditos = ¥8.500</div>
+        <ul class="pricing-features">
+          <li>5 aulas de 50 min</li>
+          <li>¥1.700 por aula</li>
+          <li>Flexibilidade total</li>
+          <li>Sem expiry</li>
+        </ul>
+        <button class="btn btn-primary" onclick="openModal('purchaseModal')">Comprar Agora</button>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-name">Pacote Grande</div>
+        <div class="pricing-amount">10</div>
+        <div class="pricing-currency">créditos = ¥14.000</div>
+        <ul class="pricing-features">
+          <li>10 aulas de 50 min</li>
+          <li>¥1.400 por aula</li>
+          <li>Flexibilidade total</li>
+          <li>Sem expiry</li>
+        </ul>
+        <button class="btn btn-secondary" onclick="openModal('purchaseModal')">Comprar Agora</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD PREVIEW -->
+  <section class="dashboard-section">
+    <h2 class="section-title">Seu Dashboard</h2>
+    <p class="section-subtitle">Tudo que você precisa em um só lugar</p>
+    
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-coins"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Créditos Disponíveis</h3>
+          <div class="stat-value">28</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-calendar"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Próxima Aula</h3>
+          <div class="stat-value">Hoje, 10 AM</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Aulas Concluídas</h3>
+          <div class="stat-value">12</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-family: var(--font-display);">Suas Próximas Aulas</h3>
+    
+    <div class="lesson-card">
+      <div class="lesson-info">
+        <h4>English Level Up Class</h4>
+        <p>Minecraft - Intermediate Level</p>
+      </div>
+      <div class="lesson-time">Hoje, 10:00 AM</div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-info">
+        <h4>English Level Up Class</h4>
+        <p>Fortnite - Conversation</p>
+      </div>
+      <div class="lesson-time">Amanhã, 3:00 PM</div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-info">
+        <h4>English Level Up Class</h4>
+        <p>Minecraft - Grammar Focus</p>
+      </div>
+      <div class="lesson-time">Jan 28, 6:00 PM</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 English Level Up. Aprenda inglês jogando com um professor dedicado.</p>
+    <p>
+      <a href="#privacy">Privacidade</a> | 
+      <a href="#terms">Termos</a> | 
+      <a href="#contact">Contato</a> | 
+      <a href="#feedback">Feedback</a>
+    </p>
+  </footer>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+      <h2 style="color: var(--primary); margin-bottom: 1.5rem; font-family: var(--font-display);">Login</h2>
+      <form>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="form-submit">Entrar</button>
+      </form>
+      <p style="text-align: center; color: var(--text-secondary); margin-top: 1rem;">
+        Não tem conta? <a href="#" onclick="closeModal('loginModal'); openModal('signupModal');" style="color: var(--primary); cursor: pointer;">Registre-se</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- SIGNUP MODAL -->
+  <div class="modal" id="signupModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
+      <h2 style="color: var(--primary); margin-bottom: 1.5rem; font-family: var(--font-display);">Criar Conta</h2>
+      <form>
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" placeholder="Seu Nome" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" placeholder="Min 8 caracteres" required>
+        </div>
+        <div class="form-group">
+          <label>Nível de Inglês</label>
+          <select required>
+            <option value="">Selecione um nível</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Preferências de Jogo</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <input type="checkbox" id="minecraft" name="games">
+              <label for="minecraft">Minecraft</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="fortnite" name="games">
+              <label for="fortnite">Fortnite</label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="form-submit">Criar Conta</button>
+      </form>
+      <p style="text-align: center; color: var(--text-secondary); margin-top: 1rem;">
+        Já tem conta? <a href="#" onclick="closeModal('signupModal'); openModal('loginModal');" style="color: var(--primary); cursor: pointer;">Faça login</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- PURCHASE MODAL -->
+  <div class="modal" id="purchaseModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('purchaseModal')">&times;</button>
+      <h2 style="color: var(--primary); margin-bottom: 1.5rem; font-family: var(--font-display);">Escolha o Método de Pagamento</h2>
+      <form>
+        <div class="form-group">
+          <label>Pacote</label>
+          <select required>
+            <option value="">Selecione um pacote</option>
+            <option value="basic">Basic - 10 créditos ($30)</option>
+            <option value="plus">Plus - 30 créditos ($75)</option>
+            <option value="pro">Pro - 60 créditos ($120)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Método de Pagamento</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <input type="radio" id="stripe" name="payment" value="stripe">
+              <label for="stripe">Stripe (Cartão de Crédito)</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="radio" id="paypal" name="payment" value="paypal">
+              <label for="paypal">PayPal</label>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="form-submit">Prosseguir para Pagamento</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    window.addEventListener('click', function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
