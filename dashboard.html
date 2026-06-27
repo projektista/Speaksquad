@@ -2,742 +2,1091 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hugo English - Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>SpeakSquad — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --primary: #00d9ff;
-      --secondary: #ff006e;
-      --accent: #ff5e7e;
-      --dark-bg: #0a0e27;
-      --darker-bg: #050810;
-      --card-bg: #1a1f3a;
-      --border-color: #2a3a5a;
-      --text-primary: #f0f0f0;
-      --text-secondary: #b0b0b0;
+      --cyan:    #00d9ff;
+      --magenta: #ff006e;
+      --violet:  #7c3aed;
+      --bg:      #0d1117;
+      --bg2:     #161b22;
+      --bg3:     #1c2333;
+      --border:  #21262d;
+      --border2: #30363d;
+      --text:    #e6edf3;
+      --muted:   #8b949e;
       --success: #00d9a3;
-      --warning: #ff9500;
-      --danger: #ff006e;
-      --font-mono: 'IBM Plex Mono', monospace;
-      --font-display: 'Space Mono', monospace;
-      --font-body: 'Outfit', sans-serif;
+      --warn:    #f0a500;
+      --danger:  #ff006e;
+      --mono:    'IBM Plex Mono', monospace;
+      --display: 'Space Mono', monospace;
+      --body:    'Outfit', sans-serif;
+      --r:       6px;
+      --sidebar: 240px;
+      --topbar:  60px;
+      --bottom-nav: 64px;
     }
+
+    html { -webkit-text-size-adjust: 100%; }
 
     body {
-      font-family: var(--font-body);
-      background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
-      color: var(--text-primary);
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    /* LAYOUT */
-    .dashboard-wrapper {
-      display: grid;
-      grid-template-columns: 250px 1fr;
-      min-height: 100vh;
-    }
-
-    /* SIDEBAR */
-    aside {
-      background: rgba(5, 8, 16, 0.95);
-      border-right: 1px solid var(--border-color);
-      padding: 2rem 1.5rem;
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 250px;
-      height: 100vh;
-      overflow-y: auto;
-    }
-
-    .sidebar-logo {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 2rem;
-      text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
-      text-align: center;
-    }
-
-    .user-profile {
+    /* ─── LAYOUT SHELL ─── */
+    .shell {
       display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 1rem;
-      background: rgba(0, 217, 255, 0.05);
-      border-radius: 8px;
-      margin-bottom: 2rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      min-height: 100svh;
     }
 
-    .user-profile:hover {
-      background: rgba(0, 217, 255, 0.1);
-      border-color: var(--primary);
+    /* ─── SIDEBAR (desktop only) ─── */
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      position: fixed; top: 0; left: 0; bottom: 0;
+      display: flex; flex-direction: column;
+      overflow-y: auto; z-index: 200;
     }
 
-    .user-avatar {
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      color: var(--dark-bg);
-      font-size: 1rem;
+    .sidebar-head {
+      padding: 1.5rem 1.25rem 1rem;
+      border-bottom: 1px solid var(--border);
     }
 
-    .user-info {
-      flex: 1;
-      min-width: 0;
+    .logo {
+      display: flex; align-items: center; gap: 0.6rem;
+      text-decoration: none; margin-bottom: 1.25rem;
     }
-
-    .user-info p {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .user-info h4 {
-      font-size: 0.95rem;
-      color: var(--primary);
-      margin-bottom: 0.2rem;
-    }
-
-    .nav-section {
-      margin-bottom: 2rem;
-    }
-
-    .nav-section-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      margin-bottom: 0.8rem;
-      letter-spacing: 1px;
-      font-weight: 600;
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.8rem 1rem;
-      color: var(--text-secondary);
-      text-decoration: none;
+    .logo-mark {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
       border-radius: 6px;
-      transition: all 0.3s ease;
-      font-size: 0.95rem;
-      margin-bottom: 0.4rem;
-      border-left: 3px solid transparent;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-size: 0.7rem; font-weight: 700;
+      color: #0d1117; flex-shrink: 0;
+    }
+    .logo-text {
+      font-family: var(--display); font-size: 0.95rem; font-weight: 700;
+      color: var(--text); letter-spacing: 0.3px;
+    }
+    .logo-text span { color: var(--cyan); }
+
+    .user-pill {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem; border-radius: var(--r);
+      background: var(--bg3); border: 1px solid var(--border);
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .user-pill:hover { border-color: var(--border2); }
+
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-size: 0.75rem; font-weight: 700;
+      color: #0d1117;
+    }
+    .avatar.lg { width: 52px; height: 52px; font-size: 1.1rem; }
+
+    .user-info { flex: 1; min-width: 0; }
+    .user-info .name {
+      font-size: 0.875rem; font-weight: 600; color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .user-info .role {
+      font-size: 0.75rem; color: var(--muted);
     }
 
-    .nav-link:hover,
-    .nav-link.active {
-      background: rgba(0, 217, 255, 0.1);
-      color: var(--primary);
-      border-left-color: var(--primary);
+    /* sidebar nav */
+    .sidebar-nav { padding: 1rem 0.75rem; flex: 1; }
+
+    .nav-group { margin-bottom: 1.5rem; }
+    .nav-group-label {
+      font-family: var(--mono); font-size: 0.65rem; font-weight: 500;
+      color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 0 0.5rem; margin-bottom: 0.4rem; display: block;
     }
 
-    .nav-link i {
-      width: 20px;
-      text-align: center;
-      font-size: 1rem;
+    .nav-item {
+      display: flex; align-items: center; gap: 0.7rem;
+      padding: 0.6rem 0.75rem; border-radius: var(--r);
+      color: var(--muted); text-decoration: none; font-size: 0.875rem;
+      font-weight: 500; cursor: pointer; transition: all 0.15s;
+      border: 1px solid transparent; margin-bottom: 0.15rem;
+      background: none; width: 100%; text-align: left;
+    }
+    .nav-item i { width: 16px; text-align: center; font-size: 0.875rem; flex-shrink: 0; }
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active {
+      background: rgba(0,217,255,0.08);
+      color: var(--cyan); border-color: rgba(0,217,255,0.15);
     }
 
-    /* MAIN CONTENT */
-    main {
-      margin-left: 250px;
-      padding: 2rem;
+    .sidebar-foot {
+      padding: 0.75rem;
+      border-top: 1px solid var(--border);
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border-color);
+    /* ─── TOP BAR ─── */
+    .topbar {
+      position: fixed; top: 0;
+      left: var(--sidebar); right: 0;
+      height: var(--topbar); z-index: 100;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; gap: 1rem;
     }
 
-    .header h1 {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      color: var(--primary);
+    .topbar-left { display: flex; align-items: center; gap: 0.75rem; }
+
+    .page-title {
+      font-family: var(--display); font-size: 1rem; font-weight: 700;
+      color: var(--text);
     }
 
-    .header-actions {
-      display: flex;
-      gap: 1rem;
+    .topbar-right { display: flex; align-items: center; gap: 0.75rem; }
+
+    /* ─── MAIN ─── */
+    .main {
+      margin-left: var(--sidebar);
+      padding-top: var(--topbar);
+      min-height: 100svh;
     }
 
+    .content {
+      padding: 2rem 1.5rem;
+      max-width: 1100px;
+    }
+
+    /* ─── BUTTONS ─── */
     .btn {
-      padding: 0.6rem 1.2rem;
-      background: linear-gradient(135deg, var(--primary), #00a8cc);
-      color: var(--dark-bg);
-      border: none;
-      border-radius: 4px;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1rem; font-family: var(--body);
+      font-size: 0.85rem; font-weight: 600; border-radius: var(--r);
+      cursor: pointer; text-decoration: none; border: 1px solid transparent;
+      transition: all 0.15s; white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
     }
+    .btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 
-    .btn:hover {
-      box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
-      transform: translateY(-2px);
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), #00a8c8);
+      color: #0d1117; font-weight: 700;
     }
+    .btn-primary:hover { box-shadow: 0 0 20px rgba(0,217,255,0.35); transform: translateY(-1px); }
 
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--primary);
-      color: var(--primary);
+    .btn-outline {
+      background: transparent; color: var(--cyan); border-color: rgba(0,217,255,0.3);
     }
+    .btn-outline:hover { background: rgba(0,217,255,0.06); border-color: var(--cyan); }
 
-    .btn-secondary:hover {
-      background: rgba(0, 217, 255, 0.1);
+    .btn-ghost {
+      background: transparent; color: var(--muted); border-color: var(--border2);
     }
+    .btn-ghost:hover { color: var(--text); border-color: var(--border2); }
 
-    /* STATS GRID */
-    .stats-grid {
+    .btn-sm { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
+    .btn-danger { background: transparent; color: var(--danger); border-color: rgba(255,0,110,0.25); }
+    .btn-danger:hover { background: rgba(255,0,110,0.06); }
+
+    /* ─── STAT CARDS ─── */
+    .stats-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem; margin-bottom: 2rem;
     }
 
     .stat-card {
-      background: rgba(26, 31, 58, 0.6);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 1.5rem;
-      position: relative;
-      overflow: hidden;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.25rem 1.5rem;
+      position: relative; overflow: hidden;
     }
-
-    .stat-card::before {
+    .stat-card::after {
       content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--violet));
     }
 
     .stat-label {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .stat-value {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--primary);
+      font-family: var(--mono); font-size: 0.7rem; font-weight: 500;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px;
       margin-bottom: 0.5rem;
     }
-
-    .stat-detail {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
+    .stat-val {
+      font-family: var(--mono); font-size: 2rem; font-weight: 600;
+      color: var(--text); line-height: 1;
     }
+    .stat-val .unit { font-size: 1rem; color: var(--muted); margin-left: 0.2rem; }
+    .stat-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.4rem; }
+    .stat-sub .up { color: var(--success); }
+    .stat-sub .warn { color: var(--warn); }
 
-    /* CONTENT SECTIONS */
-    .section {
-      margin-bottom: 2rem;
-    }
-
-    .section-title {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      color: var(--primary);
+    /* ─── SECTION HEADER ─── */
+    .sec-head {
+      display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
     }
-
-    .section-title i {
-      font-size: 1.2rem;
+    .sec-title {
+      font-family: var(--display); font-size: 0.95rem; font-weight: 700;
+      color: var(--text); display: flex; align-items: center; gap: 0.6rem;
     }
+    .sec-title i { color: var(--cyan); font-size: 0.85rem; }
 
-    /* CARDS */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
+    /* ─── CARDS ─── */
     .card {
-      background: rgba(26, 31, 58, 0.6);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 1.5rem;
-      transition: all 0.3s ease;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem;
     }
 
-    .card:hover {
-      border-color: var(--primary);
-      box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
-      transform: translateY(-4px);
+    /* ─── TABLE ─── */
+    .table-wrap {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
     }
+    .table-wrap table { width: 100%; border-collapse: collapse; }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      margin-bottom: 1rem;
-    }
-
-    .card-title {
-      font-weight: 600;
-      color: var(--primary);
-      font-size: 1rem;
-    }
-
-    .card-meta {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .card-action-btn {
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      cursor: pointer;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .card-action-btn:hover {
-      color: var(--primary);
-      transform: scale(1.2);
-    }
-
-    /* TEACHER CARD */
-    .teacher-card {
-      text-align: center;
-    }
-
-    .teacher-avatar {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 50%;
-      margin: 0 auto 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
-    }
-
-    .teacher-name {
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 0.3rem;
-    }
-
-    .teacher-specialty {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-bottom: 0.8rem;
-    }
-
-    .teacher-rating {
-      color: var(--warning);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
-
-    .teacher-rating i {
-      margin-right: 0.2rem;
-    }
-
-    .btn-small {
-      padding: 0.5rem 1rem;
-      font-size: 0.85rem;
-      width: 100%;
-    }
-
-    /* TABLES */
-    .table-wrapper {
-      overflow-x: auto;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      background: rgba(26, 31, 58, 0.6);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.95rem;
-    }
-
+    thead tr { background: var(--bg3); }
     th {
-      background: rgba(0, 217, 255, 0.05);
-      padding: 1rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border-color);
-      color: var(--primary);
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 0.8rem;
+      padding: 0.9rem 1.1rem; text-align: left;
+      font-family: var(--mono); font-size: 0.68rem; font-weight: 500;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 0.9rem 1.1rem; font-size: 0.875rem;
+      color: var(--muted); border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    td:first-child { color: var(--text); font-weight: 500; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: rgba(0,217,255,0.03); }
+
+    /* badges */
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.25rem 0.65rem; border-radius: 100px;
+      font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+    .badge-scheduled { background: rgba(0,217,255,0.1); color: var(--cyan); }
+    .badge-completed { background: rgba(0,217,163,0.1); color: var(--success); }
+    .badge-pending   { background: rgba(240,165,0,0.1); color: var(--warn); }
+    .badge-cancelled { background: rgba(255,0,110,0.1); color: var(--danger); }
 
-    td {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border-color);
+    /* game pills */
+    .game-tag {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.78rem; color: var(--muted);
+    }
+    .game-tag i { color: var(--cyan); font-size: 0.7rem; }
+
+    /* action icon buttons */
+    .icon-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); padding: 0.3rem; border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .icon-btn:hover { color: var(--cyan); background: rgba(0,217,255,0.08); }
+
+    /* ─── TEACHER CARD ─── */
+    .teacher-card {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 0.5rem;
+    }
+    .teacher-card .avatar { margin-bottom: 0.5rem; }
+    .teacher-card .t-name { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .teacher-card .t-spec { font-size: 0.83rem; color: var(--muted); }
+    .teacher-card .t-bio  { font-size: 0.83rem; color: var(--muted); line-height: 1.65; max-width: 320px; }
+    .teacher-card .btn { margin-top: 0.75rem; }
+
+    /* ─── CREDIT METER ─── */
+    .credit-bar-wrap {
+      margin: 0.75rem 0 0.25rem;
+    }
+    .credit-bar-track {
+      height: 6px; background: var(--bg3); border-radius: 100px; overflow: hidden;
+    }
+    .credit-bar-fill {
+      height: 100%; border-radius: 100px;
+      background: linear-gradient(90deg, var(--cyan), var(--violet));
+      transition: width 0.6s ease;
+    }
+    .credit-meta {
+      display: flex; justify-content: space-between;
+      font-size: 0.75rem; color: var(--muted); margin-top: 0.35rem;
     }
 
-    tr:hover {
-      background: rgba(0, 217, 255, 0.05);
+    /* ─── TZ TOGGLE ─── */
+    .tz-toggle {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: 100px; padding: 0.3rem 0.8rem;
+      font-family: var(--mono); font-size: 0.75rem; color: var(--muted);
+      cursor: pointer; transition: border-color 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
     }
+    .tz-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
+    .tz-toggle i { font-size: 0.7rem; }
 
-    .status-badge {
-      display: inline-block;
-      padding: 0.4rem 0.8rem;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
+    /* ─── NEXT LESSON BANNER ─── */
+    .next-banner {
+      background: linear-gradient(135deg, rgba(0,217,255,0.07) 0%, rgba(124,58,237,0.06) 100%);
+      border: 1px solid rgba(0,217,255,0.2);
+      border-radius: 10px; padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;
     }
-
-    .status-scheduled {
-      background: rgba(0, 217, 255, 0.1);
-      color: var(--primary);
+    .next-banner .nb-left { display: flex; align-items: center; gap: 1rem; }
+    .nb-icon {
+      width: 44px; height: 44px;
+      background: rgba(0,217,255,0.1); border: 1px solid rgba(0,217,255,0.2);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      color: var(--cyan); font-size: 1.1rem; flex-shrink: 0;
     }
+    .nb-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .nb-val { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+    .nb-sub { font-size: 0.8rem; color: var(--muted); }
 
-    .status-completed {
-      background: rgba(0, 217, 255, 0.1);
-      color: var(--success);
+    /* ─── TWO-COL GRID ─── */
+    .two-col { display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; margin-top: 2rem; }
+
+    /* ─── MOBILE BOTTOM NAV ─── */
+    .bottom-nav {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: var(--bottom-nav);
+      background: rgba(22,27,34,0.97);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      z-index: 500;
+      padding-bottom: env(safe-area-inset-bottom);
     }
-
-    .status-pending {
-      background: rgba(255, 149, 0, 0.1);
-      color: var(--warning);
+    .bottom-nav-inner {
+      height: 100%; display: flex; align-items: stretch;
     }
-
-    /* TABS */
-    .tab-nav {
-      display: flex;
-      gap: 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 1.5rem;
-    }
-
-    .tab-link {
-      padding: 1rem 0;
-      color: var(--text-secondary);
+    .bn-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0.25rem; color: var(--muted);
+      background: none; border: none; cursor: pointer;
+      font-family: var(--body); font-size: 0.65rem; font-weight: 500;
+      transition: color 0.15s;
+      -webkit-tap-highlight-color: transparent;
       text-decoration: none;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: all 0.3s ease;
-      font-weight: 500;
     }
+    .bn-item i { font-size: 1.1rem; }
+    .bn-item.active { color: var(--cyan); }
+    .bn-item span { font-size: 0.65rem; }
 
-    .tab-link:hover,
-    .tab-link.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    .tab-content {
+    /* ─── MOBILE TOPBAR ─── */
+    .mobile-topbar {
       display: none;
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--topbar); z-index: 400;
+      background: rgba(13,17,23,0.95);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      align-items: center; justify-content: space-between;
+      padding: 0 1rem;
+    }
+    .mobile-topbar .logo { margin: 0; }
+
+    /* ─── VIEWS (tab switching) ─── */
+    [data-view] { display: none; }
+    [data-view].active { display: block; }
+
+    /* ─── FORM FIELDS in modals ─── */
+    .field { margin-bottom: 1.1rem; }
+    .field label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); margin-bottom: 0.4rem;
+      text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 0.7rem 0.9rem;
+      background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: var(--r); color: var(--text);
+      font-family: var(--body); font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none; border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0,217,255,0.1);
+    }
+    .field textarea { resize: vertical; min-height: 80px; }
+
+    .form-btn {
+      width: 100%; padding: 0.8rem;
+      background: linear-gradient(135deg, var(--cyan), #00a8c8);
+      color: #0d1117; border: none; border-radius: var(--r);
+      font-family: var(--body); font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; transition: box-shadow 0.2s, transform 0.15s;
+    }
+    .form-btn:hover { box-shadow: 0 0 24px rgba(0,217,255,0.4); transform: translateY(-1px); }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 800;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 1.75rem;
+      width: 100%; max-width: 440px;
+      position: relative; max-height: 90svh; overflow-y: auto;
+    }
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: none; color: var(--muted);
+      font-size: 1.2rem; cursor: pointer; transition: color 0.15s;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal h2 {
+      font-family: var(--display); font-size: 1.1rem; color: var(--text);
+      margin-bottom: 1.25rem;
+    }
+    .modal h2 span { color: var(--cyan); }
+
+    /* ─── EMPTY STATE ─── */
+    .empty {
+      padding: 3rem 1rem; text-align: center;
+      color: var(--muted); font-size: 0.88rem;
+    }
+    .empty i { font-size: 2rem; color: var(--border2); margin-bottom: 0.75rem; display: block; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      :root { --sidebar: 200px; }
     }
 
-    .tab-content.active {
-      display: block;
-    }
-
-    /* FORMS */
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: var(--primary);
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 0.8rem;
-      background: rgba(10, 14, 39, 0.5);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 15px rgba(0, 217, 255, 0.2);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .dashboard-wrapper {
-        grid-template-columns: 1fr;
-      }
-
-      aside {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        padding: 1rem;
-      }
-
-      main {
+    @media (max-width: 720px) {
+      .sidebar { display: none; }
+      .topbar { display: none; }
+      .mobile-topbar { display: flex; }
+      .bottom-nav { display: block; }
+      .main {
         margin-left: 0;
-        padding: 1rem;
+        padding-top: var(--topbar);
+        padding-bottom: calc(var(--bottom-nav) + 1rem);
       }
-
-      .header {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .header h1 {
-        font-size: 1.5rem;
-      }
-
-      .nav-section {
-        display: none;
-      }
-
-      .user-profile {
-        margin-bottom: 1rem;
-      }
+      .content { padding: 1.25rem 1rem; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+      .two-col { grid-template-columns: 1fr; }
+      .next-banner { flex-direction: column; align-items: flex-start; }
+      .table-wrap { overflow-x: auto; }
+      table { min-width: 560px; }
     }
 
-    /* UTILITY */
-    .text-success { color: var(--success); }
-    .text-warning { color: var(--warning); }
-    .text-danger { color: var(--danger); }
-    .text-secondary { color: var(--text-secondary); }
-
-    .mt-1 { margin-top: 0.5rem; }
-    .mt-2 { margin-top: 1rem; }
-    .mb-1 { margin-bottom: 0.5rem; }
-    .mb-2 { margin-bottom: 1rem; }
-
-    /* HIDDEN BY DEFAULT */
-    [data-view] {
-      display: none;
+    @media (max-width: 420px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .stat-val { font-size: 1.6rem; }
     }
 
-    [data-view].active {
-      display: block;
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
 <body>
-  <div class="dashboard-wrapper">
-    <!-- SIDEBAR -->
-    <aside>
-      <div class="sidebar-logo">ELU</div>
-      
-      <div class="user-profile">
-        <div class="user-avatar" id="userAvatar">JD</div>
-        <div class="user-info">
-          <h4 id="userName">João Silva</h4>
-          <p id="userRole">Student</p>
+
+<!-- ─── SIDEBAR (desktop) ─── -->
+<aside class="sidebar">
+  <div class="sidebar-head">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">SS</div>
+      <span class="logo-text">Speak<span>Squad</span></span>
+    </a>
+    <div class="user-pill">
+      <div class="avatar" id="sideAvatar">JD</div>
+      <div class="user-info">
+        <div class="name" id="sideName">João Silva</div>
+        <div class="role">Student</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <span class="nav-group-label">Geral</span>
+      <button class="nav-item active" onclick="switchView('home', this)">
+        <i class="fas fa-home"></i> Dashboard
+      </button>
+      <button class="nav-item" onclick="switchView('aulas', this)">
+        <i class="fas fa-calendar"></i> Minhas Aulas
+      </button>
+      <button class="nav-item" onclick="switchView('creditos', this)">
+        <i class="fas fa-coins"></i> Créditos
+      </button>
+      <button class="nav-item" onclick="switchView('perfil', this)">
+        <i class="fas fa-user"></i> Perfil
+      </button>
+    </div>
+    <div class="nav-group">
+      <span class="nav-group-label">Configurações</span>
+      <button class="nav-item" onclick="toggleTz()">
+        <i class="fas fa-globe"></i> Fuso: <span id="tzSide">Tokyo</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="sidebar-foot">
+    <button class="nav-item btn-danger" style="width:100%; color: var(--danger);">
+      <i class="fas fa-sign-out-alt"></i> Sair
+    </button>
+  </div>
+</aside>
+
+<!-- ─── MOBILE TOPBAR ─── -->
+<div class="mobile-topbar">
+  <a href="index.html" class="logo">
+    <div class="logo-mark">SS</div>
+    <span class="logo-text">Speak<span>Squad</span></span>
+  </a>
+  <div style="display:flex; align-items:center; gap:0.75rem;">
+    <button class="tz-toggle" onclick="toggleTz()">
+      <i class="fas fa-globe"></i> <span id="tzMobile">Tokyo</span>
+    </button>
+    <div class="avatar" id="mobileAvatar" style="width:32px;height:32px;font-size:0.7rem;">JD</div>
+  </div>
+</div>
+
+<!-- ─── MOBILE BOTTOM NAV ─── -->
+<nav class="bottom-nav" aria-label="Navegação principal">
+  <div class="bottom-nav-inner">
+    <button class="bn-item active" id="bn-home" onclick="switchView('home', null, 'bn-home')">
+      <i class="fas fa-home"></i><span>Início</span>
+    </button>
+    <button class="bn-item" id="bn-aulas" onclick="switchView('aulas', null, 'bn-aulas')">
+      <i class="fas fa-calendar"></i><span>Aulas</span>
+    </button>
+    <button class="bn-item" id="bn-creditos" onclick="switchView('creditos', null, 'bn-creditos')">
+      <i class="fas fa-coins"></i><span>Créditos</span>
+    </button>
+    <button class="bn-item" id="bn-perfil" onclick="switchView('perfil', null, 'bn-perfil')">
+      <i class="fas fa-user"></i><span>Perfil</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── TOPBAR (desktop) ─── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="page-title" id="pageTitle">Dashboard</span>
+  </div>
+  <div class="topbar-right">
+    <button class="tz-toggle" onclick="toggleTz()">
+      <i class="fas fa-globe"></i> <span id="tzTop">Tokyo</span>
+    </button>
+    <button class="btn btn-primary btn-sm" onclick="openModal('agendar')">
+      <i class="fas fa-plus"></i> Agendar Aula
+    </button>
+  </div>
+</div>
+
+<!-- ─── MAIN ─── -->
+<main class="main">
+  <div class="content">
+
+    <!-- ══ VIEW: HOME ══ -->
+    <div data-view="home" class="active">
+
+      <!-- next lesson banner -->
+      <div class="next-banner">
+        <div class="nb-left">
+          <div class="nb-icon"><i class="fas fa-video"></i></div>
+          <div>
+            <div class="nb-label">Próxima aula</div>
+            <div class="nb-val">Hoje às 10:00 <span id="tzBannerLabel" style="font-size:0.75rem;color:var(--muted)">(Tokyo)</span></div>
+            <div class="nb-sub">Minecraft · Professor Hugo Sensei</div>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm">
+          <i class="fas fa-external-link-alt"></i> Entrar no Zoom
+        </button>
+      </div>
+
+      <!-- stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Créditos</div>
+          <div class="stat-val">5 <span class="unit">aulas</span></div>
+          <div class="credit-bar-wrap">
+            <div class="credit-bar-track">
+              <div class="credit-bar-fill" style="width:33%"></div>
+            </div>
+            <div class="credit-meta"><span>5 / 15 máx.</span><span class="warn">Renovar</span></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Aulas feitas</div>
+          <div class="stat-val">12</div>
+          <div class="stat-sub"><span class="up">+2</span> este mês</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Horas de aula</div>
+          <div class="stat-val">10 <span class="unit">h</span></div>
+          <div class="stat-sub">≈ 600 min de inglês</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Nível</div>
+          <div class="stat-val" style="font-size:1.4rem;">Intermediate</div>
+          <div class="stat-sub">EIKEN Grade 3</div>
         </div>
       </div>
 
-      <div class="nav-section">
-        <div class="nav-section-title">Menu</div>
-        <a class="nav-link active" href="#" onclick="switchView('student'); return false;">
-          <i class="fas fa-home"></i> Dashboard
-        </a>
-        <a class="nav-link" href="#" onclick="switchView('student'); return false;">
-          <i class="fas fa-coins"></i> Créditos
-        </a>
-        <a class="nav-link" href="#" onclick="switchView('student'); return false;">
-          <i class="fas fa-calendar"></i> Minhas Aulas
-        </a>
-        <a class="nav-link" href="#" onclick="switchView('student'); return false;">
-          <i class="fas fa-user"></i> Perfil
-        </a>
-      </div>
+      <!-- upcoming + teacher -->
+      <div class="two-col">
 
-
-
-      <div class="nav-section">
-        <div class="nav-section-title">Configurações</div>
-        <a class="nav-link" href="#" onclick="switchTimezone(); return false;">
-          <i class="fas fa-globe"></i> <span id="tzDisplay">Tokyo</span>
-        </a>
-        <a class="nav-link" href="#">
-          <i class="fas fa-sign-out-alt"></i> Sair
-        </a>
-      </div>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main>
-      <!-- STUDENT VIEW -->
-      <div data-view="student" class="active">
-        <div class="header">
-          <h1>Dashboard de Estudante</h1>
-          <div class="header-actions">
-            <button class="btn"><i class="fas fa-plus"></i> Agendar Aula</button>
-            <button class="btn btn-secondary"><i class="fas fa-coins"></i> Comprar Créditos</button>
+        <!-- upcoming table -->
+        <div>
+          <div class="sec-head">
+            <span class="sec-title"><i class="fas fa-calendar-alt"></i> Próximas Aulas</span>
+            <button class="btn btn-outline btn-sm" onclick="switchView('aulas', null, 'bn-aulas')">Ver todas</button>
           </div>
-        </div>
-
-        <!-- STATS -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Créditos Disponíveis</div>
-            <div class="stat-value">28</div>
-            <div class="stat-detail">3 aulas pendentes</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Próxima Aula</div>
-            <div class="stat-value">Hoje</div>
-            <div class="stat-detail">10:00 AM (Tokyo Time)</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Total Completado</div>
-            <div class="stat-value">12</div>
-            <div class="stat-detail">50+ horas de aula</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Nível Atual</div>
-            <div class="stat-value">Int</div>
-            <div class="stat-detail">Intermediate</div>
-          </div>
-        </div>
-
-        <!-- UPCOMING LESSONS -->
-        <div class="section">
-          <div class="section-title">
-            <i class="fas fa-calendar"></i> Próximas Aulas
-          </div>
-          
-          <div class="table-wrapper">
+          <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Professor</th>
-                  <th>Jogo</th>
                   <th>Data & Hora</th>
-                  <th>Duração</th>
+                  <th>Jogo</th>
                   <th>Status</th>
-                  <th>Ação</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Carlos Silva</strong></td>
-                  <td>Minecraft</td>
-                  <td>Hoje, 10:00 AM</td>
-                  <td>50 min</td>
-                  <td><span class="status-badge status-scheduled">Agendada</span></td>
-                  <td><i class="fas fa-external-link" style="cursor: pointer; color: var(--primary);"></i></td>
+                  <td>Hoje, 10:00</td>
+                  <td><span class="game-tag"><i class="fas fa-cube"></i> Minecraft</span></td>
+                  <td><span class="badge badge-scheduled">Agendada</span></td>
+                  <td><button class="icon-btn" title="Entrar no Zoom"><i class="fas fa-external-link-alt"></i></button></td>
                 </tr>
                 <tr>
-                  <td><strong>Ana Costa</strong></td>
-                  <td>Fortnite</td>
-                  <td>Jan 28, 3:00 PM</td>
-                  <td>50 min</td>
-                  <td><span class="status-badge status-scheduled">Agendada</span></td>
-                  <td><i class="fas fa-external-link" style="cursor: pointer; color: var(--primary);"></i></td>
+                  <td>28 Jan, 15:00</td>
+                  <td><span class="game-tag"><i class="fas fa-crosshairs"></i> Fortnite</span></td>
+                  <td><span class="badge badge-scheduled">Agendada</span></td>
+                  <td><button class="icon-btn" title="Ver detalhes"><i class="fas fa-eye"></i></button></td>
                 </tr>
                 <tr>
-                  <td><strong>Maria Santos</strong></td>
-                  <td>Minecraft</td>
-                  <td>Jan 30, 6:00 PM</td>
-                  <td>50 min</td>
-                  <td><span class="status-badge status-scheduled">Agendada</span></td>
-                  <td><i class="fas fa-external-link" style="cursor: pointer; color: var(--primary);"></i></td>
+                  <td>30 Jan, 18:00</td>
+                  <td><span class="game-tag"><i class="fas fa-cube"></i> Minecraft</span></td>
+                  <td><span class="badge badge-scheduled">Agendada</span></td>
+                  <td><button class="icon-btn" title="Cancelar"><i class="fas fa-times"></i></button></td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- ABOUT PROFESSOR -->
-        <div class="section">
-          <div class="section-title">
-            <i class="fas fa-info-circle"></i> Seu Professor
+        <!-- teacher card -->
+        <div>
+          <div class="sec-head">
+            <span class="sec-title"><i class="fas fa-user-graduate"></i> Seu Professor</span>
           </div>
-          
-          <div class="card teacher-card" style="max-width: 400px; margin: 0 auto;">
-            <div class="teacher-avatar" style="width: 100px; height: 100px; font-size: 3rem;">🎮</div>
-            <div class="card-header" style="justify-content: center; margin: 1rem 0 0.5rem;">
-              <div>
-                <div class="teacher-name">English Level Up</div>
-                <div class="teacher-specialty">Minecraft • Fortnite</div>
-              </div>
-            </div>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; text-align: center;">Aulas personalizadas focadas em seu progresso. Aprendizado através de games que você ama.</p>
-            <button class="btn btn-small" style="width: 100%;"><i class="fas fa-calendar"></i> Ver Horários Disponíveis</button>
+          <div class="card teacher-card">
+            <div class="avatar lg" style="width:64px;height:64px;font-size:1.4rem;">🎮</div>
+            <div class="t-name">Hugo Sensei</div>
+            <div class="t-spec">Minecraft · Fortnite · EIKEN</div>
+            <div class="t-bio">Aulas 1-on-1 com foco em conversação real através de jogos. Feedback por escrito após cada aula.</div>
+            <button class="btn btn-outline btn-sm" onclick="openModal('agendar')">
+              <i class="fas fa-calendar-plus"></i> Agendar nova aula
+            </button>
           </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ VIEW: AULAS ══ -->
+    <div data-view="aulas">
+      <div class="sec-head" style="margin-bottom:1.25rem;">
+        <span class="sec-title" style="font-size:1.1rem;"><i class="fas fa-calendar"></i> Minhas Aulas</span>
+        <button class="btn btn-primary btn-sm" onclick="openModal('agendar')">
+          <i class="fas fa-plus"></i> Agendar
+        </button>
+      </div>
+
+      <!-- tabs -->
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;">
+        <button class="tab-btn active" data-tab="proximas" onclick="switchTab(this,'proximas')">Próximas</button>
+        <button class="tab-btn" data-tab="historico" onclick="switchTab(this,'historico')">Histórico</button>
+      </div>
+      <style>
+        .tab-btn {
+          background:none; border:none; cursor:pointer;
+          padding:0.7rem 1.25rem; font-family:var(--body); font-size:0.875rem;
+          font-weight:600; color:var(--muted);
+          border-bottom:2px solid transparent; margin-bottom:-1px;
+          transition:color 0.15s, border-color 0.15s;
+        }
+        .tab-btn.active { color:var(--cyan); border-bottom-color:var(--cyan); }
+        [data-tab-content] { display:none; }
+        [data-tab-content].active { display:block; }
+      </style>
+
+      <div data-tab-content="proximas" class="active">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Data & Hora</th>
+                <th>Jogo</th>
+                <th>Duração</th>
+                <th>Status</th>
+                <th>Zoom</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hoje, 10:00</td>
+                <td><span class="game-tag"><i class="fas fa-cube"></i> Minecraft</span></td>
+                <td>50 min</td>
+                <td><span class="badge badge-scheduled">Agendada</span></td>
+                <td><button class="icon-btn"><i class="fas fa-external-link-alt"></i></button></td>
+              </tr>
+              <tr>
+                <td>28 Jan, 15:00</td>
+                <td><span class="game-tag"><i class="fas fa-crosshairs"></i> Fortnite</span></td>
+                <td>50 min</td>
+                <td><span class="badge badge-scheduled">Agendada</span></td>
+                <td><button class="icon-btn"><i class="fas fa-external-link-alt"></i></button></td>
+              </tr>
+              <tr>
+                <td>30 Jan, 18:00</td>
+                <td><span class="game-tag"><i class="fas fa-cube"></i> Minecraft</span></td>
+                <td>50 min</td>
+                <td><span class="badge badge-pending">Pendente</span></td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
+      <div data-tab-content="historico">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Jogo</th>
+                <th>Duração</th>
+                <th>Status</th>
+                <th>Feedback</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10 Jan, 14:00</td>
+                <td><span class="game-tag"><i class="fas fa-cube"></i> Minecraft</span></td>
+                <td>50 min</td>
+                <td><span class="badge badge-completed">Concluída</span></td>
+                <td><button class="icon-btn"><i class="fas fa-comment-alt"></i></button></td>
+              </tr>
+              <tr>
+                <td>3 Jan, 10:00</td>
+                <td><span class="game-tag"><i class="fas fa-crosshairs"></i> Fortnite</span></td>
+                <td>50 min</td>
+                <td><span class="badge badge-completed">Concluída</span></td>
+                <td><button class="icon-btn"><i class="fas fa-comment-alt"></i></button></td>
+              </tr>
+              <tr>
+                <td>20 Dez, 09:00</td>
+                <td><span class="game-tag"><i class="fas fa-cube"></i> Minecraft</span></td>
+                <td>50 min</td>
+                <td><span class="badge badge-cancelled">Cancelada</span></td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-    </main>
+    <!-- ══ VIEW: CRÉDITOS ══ -->
+    <div data-view="creditos">
+      <div class="sec-head" style="margin-bottom:1.5rem;">
+        <span class="sec-title" style="font-size:1.1rem;"><i class="fas fa-coins"></i> Créditos</span>
+        <button class="btn btn-primary btn-sm" onclick="openModal('comprar')">
+          <i class="fas fa-plus"></i> Comprar
+        </button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:2rem;">
+        <div class="stat-card">
+          <div class="stat-label">Saldo disponível</div>
+          <div class="stat-val">5 <span class="unit">créditos</span></div>
+          <div class="credit-bar-wrap">
+            <div class="credit-bar-track">
+              <div class="credit-bar-fill" style="width:33%"></div>
+            </div>
+            <div class="credit-meta"><span>5 de 15 máx.</span></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total comprado</div>
+          <div class="stat-val">17</div>
+          <div class="stat-sub">desde o início</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total usado</div>
+          <div class="stat-val">12</div>
+          <div class="stat-sub">aulas concluídas</div>
+        </div>
+      </div>
+
+      <div class="sec-head" style="margin-bottom:1rem;">
+        <span class="sec-title"><i class="fas fa-receipt"></i> Histórico de compras</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Pacote</th><th>Créditos</th><th>Valor</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>5 Jan 2025</td>
+              <td>Pacote 5</td>
+              <td style="color:var(--success);">+5</td>
+              <td>¥8.500</td>
+              <td><span class="badge badge-completed">Pago</span></td>
+            </tr>
+            <tr>
+              <td>1 Dez 2024</td>
+              <td>Pacote 10</td>
+              <td style="color:var(--success);">+10</td>
+              <td>¥14.000</td>
+              <td><span class="badge badge-completed">Pago</span></td>
+            </tr>
+            <tr>
+              <td>15 Nov 2024</td>
+              <td>Unitário</td>
+              <td style="color:var(--success);">+1</td>
+              <td>¥2.000</td>
+              <td><span class="badge badge-completed">Pago</span></td>
+            </tr>
+            <tr>
+              <td>1 Nov 2024</td>
+              <td>Pacote 5</td>
+              <td style="color:var(--success);">+5</td>
+              <td>¥8.500</td>
+              <td><span class="badge badge-completed">Pago</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ VIEW: PERFIL ══ -->
+    <div data-view="perfil">
+      <div style="margin-bottom:1.5rem;">
+        <span class="sec-title" style="font-size:1.1rem;"><i class="fas fa-user"></i> Meu Perfil</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+            <div class="avatar lg">JD</div>
+            <div>
+              <div style="font-weight:600;color:var(--text);">João Silva</div>
+              <div style="font-size:0.8rem;color:var(--muted);">Student · Intermediate</div>
+            </div>
+          </div>
+          <form onsubmit="e=>e.preventDefault()">
+            <div class="field">
+              <label>Nome</label>
+              <input type="text" value="João Silva">
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <input type="email" value="joao@email.com">
+            </div>
+            <div class="field">
+              <label>Nível de inglês</label>
+              <select>
+                <option>Beginner</option>
+                <option selected>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            </div>
+            <button type="submit" class="form-btn">Salvar alterações</button>
+          </form>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div class="card">
+            <div class="sec-title" style="margin-bottom:1rem;"><i class="fas fa-gamepad"></i> Preferências de jogo</div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;">
+              <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;font-size:0.875rem;color:var(--muted);">
+                <input type="checkbox" checked style="accent-color:var(--cyan);width:16px;height:16px;">
+                <i class="fas fa-cube" style="color:var(--cyan);"></i> Minecraft
+              </label>
+              <label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer;font-size:0.875rem;color:var(--muted);">
+                <input type="checkbox" checked style="accent-color:var(--cyan);width:16px;height:16px;">
+                <i class="fas fa-crosshairs" style="color:var(--cyan);"></i> Fortnite
+              </label>
+            </div>
+          </div>
+          <div class="card">
+            <div class="sec-title" style="margin-bottom:1rem;"><i class="fas fa-lock"></i> Segurança</div>
+            <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-bottom:0.5rem;">
+              Alterar senha
+            </button>
+            <button class="btn btn-danger btn-sm" style="width:100%;justify-content:center;">
+              Excluir conta
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ─── MODAL: AGENDAR ─── -->
+<div class="modal-overlay" id="modal-agendar" onclick="overlayClose(event,'agendar')">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('agendar')">&times;</button>
+    <h2>Agendar <span>nova aula</span></h2>
+    <form onsubmit="e=>{e.preventDefault();closeModal('agendar');}">
+      <div class="field">
+        <label>Data</label>
+        <input type="date">
+      </div>
+      <div class="field">
+        <label>Horário</label>
+        <select>
+          <option>09:00</option><option>10:00</option><option>11:00</option>
+          <option>14:00</option><option>15:00</option><option>16:00</option>
+          <option>18:00</option><option>19:00</option><option>20:00</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Jogo</label>
+        <select>
+          <option value="minecraft">Minecraft</option>
+          <option value="fortnite">Fortnite</option>
+        </select>
+      </div>
+      <button type="submit" class="form-btn"><i class="fas fa-calendar-check"></i> Confirmar agendamento</button>
+    </form>
   </div>
+</div>
 
-  <script>
-    function switchTimezone() {
-      const current = document.getElementById('tzDisplay').textContent;
-      const newTz = current === 'Tokyo' ? 'Brasília' : 'Tokyo';
-      document.getElementById('tzDisplay').textContent = newTz;
-      
-      // Show notification
-      alert(`Timezone alterado para: ${newTz}\n\nHorários serão exibidos em: ${newTz}`);
+<!-- ─── MODAL: COMPRAR CRÉDITOS ─── -->
+<div class="modal-overlay" id="modal-comprar" onclick="overlayClose(event,'comprar')">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal('comprar')">&times;</button>
+    <h2>Comprar <span>créditos</span></h2>
+    <form onsubmit="e=>{e.preventDefault();closeModal('comprar');}">
+      <div class="field">
+        <label>Pacote</label>
+        <select>
+          <option value="">Selecione</option>
+          <option value="1">Unitário — 1 crédito (¥2.000)</option>
+          <option value="5">Pacote 5 — 5 créditos (¥8.500) · -15%</option>
+          <option value="10">Pacote 10 — 10 créditos (¥14.000) · -30%</option>
+        </select>
+      </div>
+      <button type="submit" class="form-btn"><i class="fas fa-lock"></i> Pagar via Stripe</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // ── timezone ──
+  let tz = 'Tokyo';
+  function toggleTz() {
+    tz = tz === 'Tokyo' ? 'Brasília' : 'Tokyo';
+    ['tzSide','tzTop','tzMobile'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = tz;
+    });
+    const lbl = document.getElementById('tzBannerLabel');
+    if (lbl) lbl.textContent = `(${tz})`;
+  }
+
+  // ── view switching ──
+  const viewTitles = { home:'Dashboard', aulas:'Minhas Aulas', creditos:'Créditos', perfil:'Perfil' };
+
+  function switchView(name, sideBtn, bnId) {
+    // hide all views
+    document.querySelectorAll('[data-view]').forEach(v => v.classList.remove('active'));
+    document.getElementById('data-view-' + name) && null;
+    const target = document.querySelector(`[data-view="${name}"]`);
+    if (target) target.classList.add('active');
+
+    // sidebar active
+    if (sideBtn) {
+      document.querySelectorAll('.sidebar .nav-item').forEach(b => b.classList.remove('active'));
+      sideBtn.classList.add('active');
     }
-  </script>
+
+    // bottom nav active
+    document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+    if (bnId) document.getElementById(bnId)?.classList.add('active');
+    if (!bnId) {
+      // sync bottom nav from sidebar click
+      const map = { home:'bn-home', aulas:'bn-aulas', creditos:'bn-creditos', perfil:'bn-perfil' };
+      if (map[name]) document.getElementById(map[name])?.classList.add('active');
+    }
+
+    // page title
+    const pt = document.getElementById('pageTitle');
+    if (pt) pt.textContent = viewTitles[name] || name;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── tab switching ──
+  function switchTab(btn, tabName) {
+    const parent = btn.closest('[data-view]') || document;
+    parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    parent.querySelectorAll('[data-tab-content]').forEach(c => c.classList.remove('active'));
+    parent.querySelector(`[data-tab-content="${tabName}"]`)?.classList.add('active');
+  }
+
+  // ── modals ──
+  function openModal(id) {
+    document.getElementById('modal-' + id)?.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById('modal-' + id)?.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function overlayClose(e, id) {
+    if (e.target === e.currentTarget) closeModal(id);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+      document.body.style.overflow = '';
+    }
+  });
+</script>
 </body>
 </html>
