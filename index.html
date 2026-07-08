@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="SpeakSquad - Aprenda inglês jogando com aulas 1-on-1 personalizadas. Minecraft, Fortnite. Créditos sem expiração. Level Up Your English.">
+  <meta name="description" content="SpeakSquad — Aprenda inglês jogando Minecraft e Fortnite. Aulas 1-on-1. Tokyo. Level Up Your English.">
   <meta name="theme-color" content="#00d9ff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SpeakSquad — Level Up Your English</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    *, *::before, *::after {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --cyan:    #00d9ff;
@@ -28,16 +26,21 @@
       --border2: #30363d;
       --text:    #e6edf3;
       --muted:   #8b949e;
+      --soft:    #cbd5e1;
       --success: #00d9a3;
       --warn:    #f0a500;
-      --mono:    'IBM Plex Mono', monospace;
       --display: 'Space Mono', monospace;
-      --body:    'Outfit', sans-serif;
+      --mono:    'IBM Plex Mono', monospace;
+      --body:    'Inter', system-ui, sans-serif;
       --r: 6px;
       --nav-h: 64px;
     }
 
-    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      scroll-snap-type: y proximity;
+    }
 
     body {
       font-family: var(--body);
@@ -45,45 +48,45 @@
       color: var(--text);
       line-height: 1.6;
       overflow-x: hidden;
-      /* subtle scan-line signature */
-      background-image: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,217,255,0.012) 2px,
-        rgba(0,217,255,0.012) 4px
-      );
     }
 
-    /* ─── NAV ─── */
+    /* scroll-snap: forte nas seções curtas, suave nas densas (Features, Fluxo, Preço, FAQ) */
+    .snap-strong { scroll-snap-align: start; scroll-snap-stop: always; }
+    .snap-soft   { scroll-snap-align: start; scroll-snap-stop: normal; }
+
+    /* V2 grid texture */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,217,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,217,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ── NAV ── */
     header {
       position: fixed; top: 0; left: 0; right: 0; z-index: 900;
       height: var(--nav-h);
-      background: rgba(13, 17, 23, 0.92);
-      backdrop-filter: blur(16px) saturate(1.4);
-      -webkit-backdrop-filter: blur(16px) saturate(1.4);
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
-
     nav {
-      max-width: 1160px; margin: 0 auto;
-      height: 100%;
+      max-width: 1160px; margin: 0 auto; height: 100%;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 1.5rem;
-      gap: 1.5rem;
+      padding: 0 1.5rem; gap: 1.5rem;
     }
-
     .logo {
       display: flex; align-items: center; gap: 0.6rem;
       text-decoration: none; flex-shrink: 0;
     }
     .logo-mark {
-      width: 32px; height: 32px;
+      width: 32px; height: 32px; border-radius: 7px;
       background: linear-gradient(135deg, var(--cyan), var(--violet));
-      border-radius: 7px;
       display: flex; align-items: center; justify-content: center;
       font-family: var(--display); font-size: 0.75rem; font-weight: 700;
-      color: #0d1117; letter-spacing: -0.5px;
+      color: #0d1117;
     }
     .logo-text {
       font-family: var(--display); font-size: 1.05rem; font-weight: 700;
@@ -91,23 +94,18 @@
     }
     .logo-text span { color: var(--cyan); }
 
-    .nav-links {
-      display: flex; gap: 2rem; list-style: none;
-    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
-      color: var(--muted); text-decoration: none;
-      font-size: 0.875rem; font-weight: 500;
-      transition: color 0.2s;
+      font-family: var(--body); font-size: 0.875rem; font-weight: 500;
+      color: var(--muted); text-decoration: none; transition: color 0.15s;
     }
     .nav-links a:hover { color: var(--text); }
 
     .nav-cta { display: flex; gap: 0.75rem; align-items: center; }
 
-    /* Hamburger */
     .burger {
-      display: none; background: none; border: none;
-      cursor: pointer; padding: 0.4rem; color: var(--muted);
-      flex-direction: column; gap: 5px;
+      display: none; background: none; border: none; cursor: pointer;
+      padding: 0.4rem; color: var(--muted); flex-direction: column; gap: 5px;
     }
     .burger span {
       display: block; width: 22px; height: 2px;
@@ -123,50 +121,32 @@
       top: var(--nav-h); left: 0; right: 0;
       background: var(--bg2); border-bottom: 1px solid var(--border);
       z-index: 890; padding: 1.25rem 1.5rem;
-      flex-direction: column; gap: 0.25rem;
+      flex-direction: column;
     }
     .mobile-nav.open { display: flex; }
     .mobile-nav a {
-      color: var(--muted); text-decoration: none;
-      padding: 0.75rem 0.5rem; font-size: 1rem; font-weight: 500;
-      border-bottom: 1px solid var(--border);
-      transition: color 0.2s;
+      color: var(--muted); text-decoration: none; font-size: 1rem;
+      padding: 0.75rem 0.5rem; border-bottom: 1px solid var(--border);
+      font-weight: 500; transition: color 0.15s;
     }
     .mobile-nav a:hover { color: var(--cyan); }
-    .mobile-nav .mobile-cta { display: flex; gap: 0.75rem; margin-top: 1rem; }
-    .mobile-cta .btn { flex: 1; justify-content: center; }
+    .mobile-nav .mob-cta { display: flex; gap: 0.75rem; margin-top: 1rem; }
+    .mob-cta .btn { flex: 1; justify-content: center; }
 
-    /* ─── BUTTONS ─── */
+    /* ── BUTTONS ── */
     .btn {
       display: inline-flex; align-items: center; gap: 0.45rem;
       padding: 0.55rem 1.2rem;
       font-family: var(--body); font-size: 0.875rem; font-weight: 600;
-      border-radius: var(--r); cursor: pointer;
-      text-decoration: none; border: 1px solid transparent;
-      transition: all 0.2s; white-space: nowrap;
-      -webkit-tap-highlight-color: transparent;
+      border-radius: var(--r); cursor: pointer; text-decoration: none;
+      border: 1px solid transparent; transition: all 0.2s;
+      white-space: nowrap; -webkit-tap-highlight-color: transparent;
     }
     .btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 
-    .btn-ghost {
-      background: transparent; color: var(--muted);
-      border-color: var(--border2);
-    }
-    .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
-
-    .btn-outline {
-      background: transparent; color: var(--cyan);
-      border-color: var(--cyan);
-    }
-    .btn-outline:hover {
-      background: rgba(0,217,255,0.08);
-      box-shadow: 0 0 20px rgba(0,217,255,0.2);
-    }
-
     .btn-primary {
       background: linear-gradient(135deg, var(--cyan) 0%, #00a8c8 100%);
-      color: #0d1117; border-color: transparent;
-      font-weight: 700;
+      color: #0d1117; font-weight: 700;
     }
     .btn-primary:hover {
       box-shadow: 0 0 28px rgba(0,217,255,0.45);
@@ -174,207 +154,393 @@
     }
     .btn-primary:active { transform: translateY(0); }
 
-    .btn-lg { padding: 0.85rem 2rem; font-size: 1rem; border-radius: 8px; }
-
-    /* ─── HERO ─── */
-    .hero {
-      min-height: 100svh;
-      padding: calc(var(--nav-h) + 4rem) 1.5rem 4rem;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
+    .btn-outline {
+      background: transparent; color: var(--cyan);
+      border-color: rgba(0,217,255,0.4);
+    }
+    .btn-outline:hover {
+      background: rgba(0,217,255,0.08);
+      border-color: var(--cyan);
     }
 
-    /* ambient glows */
-    .hero::before {
+    .btn-ghost {
+      background: transparent; color: var(--muted); border-color: var(--border2);
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+
+    .btn-lg { padding: 0.85rem 2rem; font-size: 1rem; border-radius: 8px; }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 5rem 0; }
+
+    .sec-label {
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+      color: var(--cyan); letter-spacing: 2px; text-transform: uppercase;
+      display: block; margin-bottom: 0.75rem;
+    }
+    h2.sec-title {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 700; line-height: 1.15; color: var(--text);
+      margin-bottom: 0.75rem; letter-spacing: -0.5px;
+    }
+    .sec-sub {
+      font-size: 1rem; color: var(--muted); line-height: 1.75; max-width: 560px;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100svh;
+      padding: calc(var(--nav-h) + 4rem) 0 4rem;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
       content: '';
       position: absolute; top: 10%; right: -5%;
       width: 500px; height: 500px;
-      background: radial-gradient(circle, rgba(0,217,255,0.12) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(0,217,255,0.1) 0%, transparent 65%);
       pointer-events: none;
     }
-    .hero::after {
+    #hero::after {
       content: '';
       position: absolute; bottom: 5%; left: -10%;
-      width: 420px; height: 420px;
-      background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 65%);
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 65%);
       pointer-events: none;
     }
 
-    .hero-inner {
-      max-width: 740px; width: 100%; text-align: center;
-      position: relative; z-index: 1;
-    }
+    .hero-inner { max-width: 720px; position: relative; z-index: 1; }
 
+    /* V1 badge pill */
     .hero-badge {
       display: inline-flex; align-items: center; gap: 0.5rem;
       background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.2);
       border-radius: 100px; padding: 0.4rem 1rem;
       font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
-      color: var(--cyan); letter-spacing: 0.5px;
-      margin-bottom: 2rem;
+      color: var(--cyan); letter-spacing: 0.5px; margin-bottom: 2rem;
     }
-    .hero-badge::before { content: '>_'; opacity: 0.6; }
+    .hero-badge::before { content: '>_'; opacity: 0.6; margin-right: 0.2rem; }
 
-    .hero h1 {
+    h1 {
       font-family: var(--display); font-weight: 700;
-      font-size: clamp(2.4rem, 6vw, 4.2rem);
-      line-height: 1.1; letter-spacing: -1px;
-      margin-bottom: 1.5rem;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      line-height: 1.1; letter-spacing: -1px; margin-bottom: 1.5rem;
     }
-    .hero h1 .line1 { display: block; color: var(--text); }
-    .hero h1 .line2 {
+    h1 .line1 { display: block; color: var(--text); }
+    h1 .line2 {
       display: block;
       background: linear-gradient(90deg, var(--cyan), var(--magenta));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .hero-sub {
+    .hero-desc {
       font-size: 1.05rem; color: var(--muted);
-      max-width: 480px; margin: 0 auto 2.5rem;
-      line-height: 1.75;
+      max-width: 500px; line-height: 1.75; margin-bottom: 2.25rem;
     }
 
-    .hero-cta {
-      display: flex; gap: 1rem; justify-content: center;
-      flex-wrap: wrap;
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+    /* V2 CTA wording, V1 note style */
+    .hero-note {
+      font-size: 0.8rem; color: var(--muted); margin-top: 1rem;
+      display: flex; align-items: center; gap: 0.4rem;
     }
+    .hero-note i { color: var(--success); font-size: 0.7rem; }
 
     .hero-stats {
-      display: flex; gap: 2.5rem; justify-content: center;
-      margin-top: 3.5rem; flex-wrap: wrap;
+      display: flex; gap: 2.5rem; margin-top: 3.5rem; flex-wrap: wrap;
     }
-    .hstat { text-align: center; }
     .hstat-val {
-      font-family: var(--mono); font-size: 1.6rem; font-weight: 600;
-      color: var(--cyan); display: block;
+      font-family: var(--mono); font-size: 1.8rem; font-weight: 600;
+      color: var(--cyan); display: block; line-height: 1;
     }
-    .hstat-lbl { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .hstat-lbl { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; }
 
+    /* V1 game pills */
     .hero-games {
-      display: flex; justify-content: center; gap: 1rem;
-      margin-top: 2.5rem; flex-wrap: wrap;
+      display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem;
     }
     .game-pill {
-      display: inline-flex; align-items: center; gap: 0.5rem;
+      display: inline-flex; align-items: center; gap: 0.45rem;
       background: var(--bg2); border: 1px solid var(--border2);
-      border-radius: 100px; padding: 0.5rem 1rem;
-      font-size: 0.85rem; font-weight: 500; color: var(--muted);
+      border-radius: 100px; padding: 0.45rem 1rem;
+      font-size: 0.83rem; font-weight: 500; color: var(--muted);
     }
-    .game-pill i { color: var(--cyan); }
+    .game-pill i { color: var(--cyan); font-size: 0.8rem; }
 
-    /* ─── SECTION WRAPPER ─── */
-    .section {
-      max-width: 1160px; margin: 0 auto;
-      padding: 5rem 1.5rem;
+    /* ── PROBLEM ── */
+    #problem {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
-
-    .section-label {
-      font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
-      color: var(--cyan); letter-spacing: 2px; text-transform: uppercase;
-      margin-bottom: 0.75rem; display: block;
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; margin-top: 2.5rem;
     }
-    .section-label::before { content: '// '; opacity: 0.5; }
-
-    .section-title {
-      font-family: var(--display); font-size: clamp(1.6rem, 3.5vw, 2.5rem);
-      font-weight: 700; line-height: 1.2;
-      color: var(--text); margin-bottom: 0.75rem;
-    }
-    .section-sub {
-      font-size: 1rem; color: var(--muted); margin-bottom: 3rem;
-    }
-
-    /* ─── FEATURES ─── */
-    #features { background: var(--bg2); }
-    #features .section { padding-top: 4.5rem; padding-bottom: 4.5rem; }
-
-    .feat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .feat-card {
+    .problem-card {
       background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem;
+      position: relative; overflow: hidden;
+    }
+    .problem-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; width: 3px; bottom: 0;
+      background: rgba(239,68,68,0.5);
+    }
+    .problem-card.positive::before { background: var(--cyan); }
+    .problem-card h3 {
+      font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem;
+    }
+    .problem-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── MÉTODO (motivação) ── */
+    #metodo {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      display: flex; align-items: center; min-height: 60svh;
+    }
+    #metodo .wrap { max-width: 760px; }
+    #metodo .sec-sub { max-width: 100%; font-size: 1.02rem; }
+    #metodo .sec-sub + .sec-sub { margin-top: 1.1rem; }
+
+    /* ── FEATURES (V1 style) ── */
+    #features { background: var(--bg); }
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem; margin-top: 2.5rem;
+    }
+    .feat-card {
+      background: var(--bg2); border: 1px solid var(--border);
       border-radius: 10px; padding: 1.75rem;
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
       position: relative; overflow: hidden;
     }
     .feat-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
       background: linear-gradient(90deg, var(--cyan), var(--violet));
       opacity: 0; transition: opacity 0.2s;
     }
     .feat-card:hover {
       border-color: rgba(0,217,255,0.3);
-      box-shadow: 0 0 30px rgba(0,217,255,0.08);
+      box-shadow: 0 0 30px rgba(0,217,255,0.07);
       transform: translateY(-3px);
     }
     .feat-card:hover::before { opacity: 1; }
-
     .feat-icon {
       width: 44px; height: 44px;
       background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.15);
       border-radius: 8px; display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; margin-bottom: 1.1rem; color: var(--cyan);
+      font-size: 1.2rem; color: var(--cyan); margin-bottom: 1.1rem;
     }
-    .feat-card h3 {
-      font-size: 1rem; font-weight: 600; color: var(--text);
-      margin-bottom: 0.5rem;
-    }
-    .feat-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+    .feat-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+    .feat-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
 
-    /* ─── HOW IT WORKS ─── */
+    /* ── GAME MODES SIGNATURE ── */
+    #modos { background: var(--bg2); border-top: 1px solid var(--border); }
+    .modes-intro { max-width: 600px; margin-bottom: 2.5rem; }
+    .modes-grid {
+      display: grid; grid-template-columns: 170px 1fr 1fr 1fr;
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    .mode-col { background: var(--bg3); display: flex; flex-direction: column; }
+    .mode-col.labels { background: var(--bg2); }
+    .mode-header { padding: 1.25rem 1.25rem 1rem; border-bottom: 1px solid var(--border); }
+    .mode-header.featured { background: rgba(0,217,255,0.04); }
+    .mode-badge {
+      font-family: var(--mono); font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 0.18rem 0.55rem; border-radius: 100px;
+      margin-bottom: 0.7rem; display: inline-block;
+    }
+    .badge-mc  { background: rgba(34,197,94,0.12); color: #4ade80; }
+    .badge-fn  { background: rgba(240,165,0,0.12); color: #fbbf24; }
+    .badge-pvp { background: rgba(255,0,110,0.12); color: #fb7185; }
+    .mode-header h3 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
+    .mode-header p { font-size: 0.78rem; color: var(--muted); }
+    .mode-rows { flex: 1; }
+    .mode-row {
+      padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 0.2rem;
+    }
+    .mode-row:last-child { border-bottom: none; }
+    .mode-rlabel {
+      font-family: var(--mono); font-size: 0.62rem; font-weight: 500;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .mode-col.labels .mode-row { justify-content: center; }
+    .mode-col.labels .mode-rlabel {
+      font-size: 0.8rem; color: var(--soft); text-transform: none;
+      letter-spacing: 0; font-weight: 600; font-family: var(--body);
+    }
+    .mode-rval {
+      font-size: 0.82rem; color: var(--muted); font-weight: 500;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .dot-g { background: var(--success); }
+    .dot-y { background: var(--warn); }
+    .dot-r { background: #ef4444; }
+    .modes-note {
+      margin-top: 1.5rem; padding: 1rem 1.25rem;
+      background: rgba(0,217,255,0.04); border: 1px solid rgba(0,217,255,0.12);
+      border-radius: var(--r); font-size: 0.875rem; color: var(--muted); line-height: 1.7;
+    }
+    .modes-note strong { color: var(--cyan); }
+
+    /* ── FLUXO DA AULA (3 partes) ── */
+    #fluxo { background: var(--bg2); border-top: 1px solid var(--border); }
+    .fluxo-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem; margin-top: 2.5rem;
+    }
+    .fluxo-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.75rem;
+      position: relative; overflow: hidden;
+    }
+    .fluxo-card::before {
+      content: attr(data-num);
+      position: absolute; top: -0.5rem; right: 0.5rem;
+      font-family: var(--display); font-size: 4.5rem; font-weight: 700;
+      color: rgba(0,217,255,0.06); line-height: 1; pointer-events: none;
+    }
+    .fluxo-tag {
+      font-family: var(--mono); font-size: 0.68rem; font-weight: 600;
+      color: var(--cyan); letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 0.75rem; display: block;
+    }
+    .fluxo-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 0.6rem; }
+    .fluxo-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.75; position: relative; z-index: 1; }
+
+    /* ── AULA GRÁTIS (4 passos) ── */
+    #gratis { background: var(--bg); }
+    .gratis-banner {
+      background: linear-gradient(135deg, rgba(0,217,255,0.06) 0%, rgba(124,58,237,0.05) 100%);
+      border: 1px solid rgba(0,217,255,0.18);
+      border-radius: 10px; padding: 1rem 1.5rem;
+      font-size: 0.9rem; color: var(--soft);
+      margin-bottom: 2.5rem; margin-top: -0.5rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .gratis-banner i { color: var(--success); font-size: 0.9rem; flex-shrink: 0; }
+    .gratis-steps {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .gratis-step {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem 1.25rem;
+    }
+    .gratis-num {
+      font-family: var(--mono); font-size: 0.7rem; font-weight: 600;
+      color: var(--cyan); letter-spacing: 1px; margin-bottom: 0.6rem; display: block;
+    }
+    .gratis-step h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+    .gratis-step p { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── REQUISITOS ── */
+    #requisitos { background: var(--bg2); border-top: 1px solid var(--border); }
+    .req-list {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.9rem; margin-top: 2.5rem;
+    }
+    .req-item {
+      display: flex; align-items: center; gap: 0.9rem;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.1rem 1.25rem;
+    }
+    .req-icon {
+      width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--cyan); font-size: 1rem;
+    }
+    .req-item span { font-size: 0.9rem; color: var(--soft); font-weight: 500; }
+    .req-item .req-opt { font-size: 0.72rem; color: var(--muted); display: block; margin-top: 0.1rem; font-weight: 400; }
+
+    /* ── FAQ ── */
+    #faq { background: var(--bg); }
+    .faq-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .faq-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+    }
+    .faq-q {
+      width: 100%; text-align: left; background: none; border: none;
+      padding: 1.1rem 1.4rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      font-family: var(--body); font-size: 0.95rem; font-weight: 600; color: var(--text);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .faq-q i { color: var(--cyan); font-size: 0.85rem; transition: transform 0.25s; flex-shrink: 0; }
+    .faq-item.open .faq-q i { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+    }
+    .faq-a-inner { padding: 0 1.4rem 1.25rem; font-size: 0.875rem; color: var(--muted); line-height: 1.75; }
+    .faq-item.open .faq-a { max-height: 300px; }
+
+    /* ── HOW (V1 — 3 cards grid) ── */
+    #como { background: var(--bg); }
     .steps-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem; position: relative;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem; margin-top: 2.5rem;
     }
-
     .step {
       background: var(--bg2); border: 1px solid var(--border);
       border-radius: 10px; padding: 2rem 1.5rem; text-align: center;
-      position: relative;
     }
-
     .step-num {
       display: inline-flex; align-items: center; justify-content: center;
       width: 48px; height: 48px; border-radius: 50%;
       background: linear-gradient(135deg, var(--cyan), var(--violet));
       font-family: var(--display); font-size: 1.1rem; font-weight: 700;
       color: #0d1117; margin-bottom: 1.25rem;
-      box-shadow: 0 0 24px rgba(0,217,255,0.3);
+      box-shadow: 0 0 24px rgba(0,217,255,0.25);
     }
     .step h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
-    .step p { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
+    .step p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
 
-    /* connector line desktop */
-    @media (min-width: 640px) {
-      .steps-row::before {
-        content: '';
-        position: absolute; top: 60px; left: calc(33% + 24px); right: calc(33% + 24px);
-        height: 1px; background: linear-gradient(90deg, var(--cyan), var(--violet));
-        opacity: 0.3; pointer-events: none;
-      }
+    /* ── SOBRE (V2) ── */
+    #sobre { background: var(--bg2); border-top: 1px solid var(--border); }
+    .sobre-grid {
+      display: grid; grid-template-columns: 1fr 1.4fr;
+      gap: 3.5rem; align-items: start; margin-top: 2.5rem;
     }
-
-    /* ─── PRICING ─── */
-    #pricing { background: var(--bg2); }
-    #pricing .section { padding-top: 4.5rem; padding-bottom: 4.5rem; }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-    }
-    @media (max-width: 680px) {
-      .pricing-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
-    }
-
-    .price-card {
+    .sobre-visual {
       background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 0.75rem;
+    }
+    .sobre-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--violet), var(--cyan));
+      display: flex; align-items: center; justify-content: center; font-size: 2rem;
+    }
+    .sobre-visual .s-name { font-weight: 700; color: var(--text); font-size: 1.05rem; }
+    .sobre-visual .s-role { font-size: 0.8rem; color: var(--muted); }
+    .sobre-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-top: 0.25rem; }
+    .sobre-tag {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 100px; padding: 0.22rem 0.7rem;
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .sobre-content p { font-size: 0.975rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.1rem; }
+    .sobre-content p:last-of-type { margin-bottom: 0; }
+
+    /* ── PRICING (V1 — 3 cards, V2 tom) ── */
+    #preco { background: var(--bg); }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem; margin-top: 2.5rem;
+    }
+    .price-card {
+      background: var(--bg2); border: 1px solid var(--border);
       border-radius: 12px; padding: 2rem 1.75rem;
       display: flex; flex-direction: column;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -382,7 +548,7 @@
     }
     .price-card.featured {
       border-color: var(--cyan);
-      box-shadow: 0 0 48px rgba(0,217,255,0.12);
+      box-shadow: 0 0 40px rgba(0,217,255,0.1);
     }
     .price-card.featured::after {
       content: '';
@@ -390,153 +556,147 @@
       background: linear-gradient(135deg, rgba(0,217,255,0.04) 0%, transparent 60%);
       pointer-events: none;
     }
-
     .price-tag {
       position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
       background: linear-gradient(90deg, var(--cyan), var(--violet));
       color: #0d1117; font-size: 0.7rem; font-weight: 700;
-      padding: 0.3rem 1rem; border-radius: 0 0 6px 6px;
+      padding: 0.28rem 1rem; border-radius: 0 0 6px 6px;
       letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;
     }
-
     .price-name {
-      font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
-      color: var(--muted); letter-spacing: 1px; text-transform: uppercase;
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
       margin-bottom: 1rem; margin-top: 0.5rem;
     }
     .featured .price-name { margin-top: 1.25rem; }
-
-    .price-amount {
-      display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 0.3rem;
-    }
+    .price-amount { display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 0.3rem; }
     .price-val {
-      font-family: var(--display); font-size: 2.6rem; font-weight: 700;
-      color: var(--text);
+      font-family: var(--mono); font-size: 2.6rem; font-weight: 600;
+      color: var(--text); letter-spacing: -1px; line-height: 1;
     }
-    .price-unit { font-size: 0.85rem; color: var(--muted); }
-
-    .price-per {
-      font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem;
-    }
+    .price-unit { font-size: 0.875rem; color: var(--muted); }
+    .price-per { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
     .price-per strong { color: var(--success); }
-
-    .price-list {
-      list-style: none; flex: 1; margin-bottom: 1.5rem;
-    }
+    .price-list { list-style: none; flex: 1; margin-bottom: 1.5rem; }
     .price-list li {
-      display: flex; align-items: center; gap: 0.6rem;
+      display: flex; align-items: flex-start; gap: 0.6rem;
       font-size: 0.875rem; color: var(--muted);
       padding: 0.45rem 0; border-bottom: 1px solid var(--border);
     }
     .price-list li:last-child { border-bottom: none; }
-    .price-list li i { color: var(--success); font-size: 0.75rem; flex-shrink: 0; }
-
+    .price-list li i { color: var(--success); font-size: 0.72rem; margin-top: 0.22rem; flex-shrink: 0; }
+    /* V2 honest footer */
+    .price-footer {
+      margin-top: 1rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem; color: var(--muted); line-height: 1.65;
+    }
     .price-card .btn { width: 100%; justify-content: center; }
 
-    /* ─── FOOTER ─── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 1.5rem;
-      text-align: center;
+    /* ── CTA FINAL (V2 wording) ── */
+    #cta { background: var(--bg2); border-top: 1px solid var(--border); text-align: center; }
+    #cta .wrap { max-width: 640px; }
+    #cta h2 {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700; color: var(--text);
+      letter-spacing: -0.5px; margin-bottom: 1rem;
     }
-    footer p { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
-    footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    #cta p { font-size: 1rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.75; }
+    #cta .fine { font-size: 0.8rem; color: var(--muted); margin-top: 1.25rem; line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; text-align: center; }
+    footer p { font-size: 0.82rem; color: var(--muted); }
+    footer a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
     footer a:hover { color: var(--cyan); }
 
-    /* ─── MODALS ─── */
-    .modal-overlay {
+    /* ── MODALS (V1 full signup + login) ── */
+    .overlay {
       display: none; position: fixed; inset: 0; z-index: 950;
       background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      align-items: center; justify-content: center;
-      padding: 1.5rem;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      align-items: center; justify-content: center; padding: 1.5rem;
     }
-    .modal-overlay.open { display: flex; }
-
+    .overlay.open { display: flex; }
     .modal {
       background: var(--bg2); border: 1px solid var(--border2);
       border-radius: 12px; padding: 2rem;
-      width: 100%; max-width: 440px;
+      width: 100%; max-width: 430px;
       position: relative; max-height: 90svh; overflow-y: auto;
     }
-
-    .modal-close {
+    .modal-x {
       position: absolute; top: 1rem; right: 1rem;
       background: none; border: none; color: var(--muted);
-      font-size: 1.25rem; cursor: pointer; padding: 0.25rem;
-      transition: color 0.2s;
+      font-size: 1.2rem; cursor: pointer; transition: color 0.15s;
     }
-    .modal-close:hover { color: var(--text); }
-
+    .modal-x:hover { color: var(--text); }
     .modal h2 {
-      font-family: var(--display); font-size: 1.25rem;
+      font-family: var(--display); font-size: 1.15rem; font-weight: 700;
       color: var(--text); margin-bottom: 1.5rem;
     }
     .modal h2 span { color: var(--cyan); }
-
-    .field { margin-bottom: 1.25rem; }
+    .field { margin-bottom: 1.1rem; }
     .field label {
-      display: block; font-size: 0.8rem; font-weight: 600;
-      color: var(--muted); margin-bottom: 0.45rem;
-      letter-spacing: 0.3px; text-transform: uppercase;
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); margin-bottom: 0.4rem;
+      text-transform: uppercase; letter-spacing: 0.3px;
     }
     .field input, .field select {
-      width: 100%; padding: 0.75rem 1rem;
+      width: 100%; padding: 0.72rem 0.9rem;
       background: var(--bg3); border: 1px solid var(--border2);
       border-radius: var(--r); color: var(--text);
-      font-family: var(--body); font-size: 0.95rem;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      -webkit-appearance: none;
+      font-family: var(--body); font-size: 0.9rem;
+      transition: border-color 0.15s, box-shadow 0.15s; -webkit-appearance: none;
     }
     .field input:focus, .field select:focus {
-      outline: none;
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px rgba(0,217,255,0.12);
+      outline: none; border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0,217,255,0.1);
     }
-    .field input::placeholder { color: var(--muted); }
-
-    .field-check-row { display: flex; gap: 1.5rem; }
-    .check-item { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
-    .check-item input[type="checkbox"] {
-      width: 18px; height: 18px; border-radius: 4px;
-      accent-color: var(--cyan); cursor: pointer;
-    }
+    .field input::placeholder { color: var(--muted); opacity: 1; }
+    .check-row { display: flex; gap: 1.5rem; }
+    .check-item { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; }
+    .check-item input { width: 16px; height: 16px; accent-color: var(--cyan); cursor: pointer; }
     .check-item span { font-size: 0.9rem; color: var(--muted); }
-
-    .modal-sub {
-      text-align: center; font-size: 0.85rem;
-      color: var(--muted); margin-top: 1.25rem;
-    }
-    .modal-sub a {
-      color: var(--cyan); text-decoration: none; font-weight: 600;
-    }
-    .modal-sub a:hover { text-decoration: underline; }
-
-    .form-btn {
-      width: 100%; padding: 0.85rem;
-      background: linear-gradient(135deg, var(--cyan) 0%, #00a8c8 100%);
+    .modal-btn {
+      width: 100%; padding: 0.82rem;
+      background: linear-gradient(135deg, var(--cyan), #00a8c8);
       color: #0d1117; border: none; border-radius: var(--r);
       font-family: var(--body); font-size: 0.95rem; font-weight: 700;
-      cursor: pointer; letter-spacing: 0.3px;
-      transition: box-shadow 0.2s, transform 0.15s;
+      cursor: pointer; transition: box-shadow 0.15s, transform 0.15s;
     }
-    .form-btn:hover {
-      box-shadow: 0 0 28px rgba(0,217,255,0.4);
-      transform: translateY(-1px);
+    .modal-btn:hover { box-shadow: 0 0 24px rgba(0,217,255,0.4); transform: translateY(-1px); }
+    .modal-btn:active { transform: translateY(0); }
+    .modal-foot {
+      text-align: center; font-size: 0.82rem;
+      color: var(--muted); margin-top: 1rem;
     }
-    .form-btn:active { transform: translateY(0); }
+    .modal-foot a { color: var(--cyan); text-decoration: none; font-weight: 600; }
 
-    /* ─── RESPONSIVE ─── */
+    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .nav-links, .nav-cta { display: none; }
       .burger { display: flex; }
     }
+    @media (max-width: 900px) {
+      .modes-grid { grid-template-columns: 1fr; }
+      .mode-col.labels { display: none; }
+      .sobre-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    @media (max-width: 680px) {
+      /* V1 pricing — colapsa para 1 coluna */
+      .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
+      .problem-grid { grid-template-columns: 1fr; }
+      section { padding: 3.5rem 0; }
+      .fluxo-grid { grid-template-columns: 1fr; }
+      .gratis-steps { grid-template-columns: 1fr; }
+    }
 
+    @media (max-width: 480px) {
+      .req-list { grid-template-columns: 1fr; }
+    }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
@@ -551,14 +711,16 @@
     </a>
     <ul class="nav-links">
       <li><a href="#features">Por que</a></li>
-      <li><a href="#how">Como funciona</a></li>
-      <li><a href="#pricing">Preços</a></li>
+      <li><a href="#metodo">Método</a></li>
+      <li><a href="#como">Como funciona</a></li>
+      <li><a href="#preco">Preço</a></li>
+      <li><a href="#faq">FAQ</a></li>
     </ul>
     <div class="nav-cta">
-      <button class="btn btn-ghost" onclick="openModal('login')">Entrar</button>
-      <button class="btn btn-primary" onclick="openModal('signup')">Começar</button>
+      <button class="btn btn-ghost" onclick="open_m('login')">Entrar</button>
+      <button class="btn btn-primary" onclick="open_m('signup')">Primeira aula grátis</button>
     </div>
-    <button class="burger" id="burger" onclick="toggleNav()" aria-label="Menu" aria-expanded="false">
+    <button class="burger" id="burger" onclick="toggleNav()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </nav>
@@ -566,117 +728,180 @@
 
 <div class="mobile-nav" id="mobileNav">
   <a href="#features" onclick="closeNav()">Por que SpeakSquad</a>
-  <a href="#how" onclick="closeNav()">Como funciona</a>
-  <a href="#pricing" onclick="closeNav()">Preços</a>
-  <div class="mobile-cta">
-    <button class="btn btn-ghost" onclick="openModal('login'); closeNav()">Entrar</button>
-    <button class="btn btn-primary" onclick="openModal('signup'); closeNav()">Começar grátis</button>
+  <a href="#metodo" onclick="closeNav()">Método</a>
+  <a href="#como" onclick="closeNav()">Como funciona</a>
+  <a href="#preco" onclick="closeNav()">Preço</a>
+  <a href="#faq" onclick="closeNav()">FAQ</a>
+  <div class="mob-cta">
+    <button class="btn btn-ghost" onclick="open_m('login');closeNav()">Entrar</button>
+    <button class="btn btn-primary" onclick="open_m('signup');closeNav()">Aula grátis</button>
   </div>
 </div>
 
 <!-- HERO -->
-<section class="hero" id="home">
-  <div class="hero-inner">
-    <div class="hero-badge">LEVEL UP YOUR ENGLISH</div>
-    <h1>
-      <span class="line1">Inglês fluente</span>
-      <span class="line2">jogando seus games</span>
-    </h1>
-    <p class="hero-sub">Aulas 1-on-1 de inglês via Minecraft e Fortnite. Conversação real, progresso real. Créditos sem expiração, seu horário.</p>
-    <div class="hero-cta">
-      <button class="btn btn-primary btn-lg" onclick="openModal('signup')">
-        <i class="fas fa-gamepad"></i> Começar agora
-      </button>
-      <a href="#how" class="btn btn-outline btn-lg">Como funciona</a>
-    </div>
-    <div class="hero-games">
-      <span class="game-pill"><i class="fas fa-cube"></i> Minecraft</span>
-      <span class="game-pill"><i class="fas fa-crosshairs"></i> Fortnite</span>
-      <span class="game-pill"><i class="fas fa-video"></i> Via Zoom</span>
-    </div>
-    <div class="hero-stats">
-      <div class="hstat"><span class="hstat-val">50min</span><span class="hstat-lbl">por aula</span></div>
-      <div class="hstat"><span class="hstat-val">1-on-1</span><span class="hstat-lbl">dedicado</span></div>
-      <div class="hstat"><span class="hstat-val">¥0</span><span class="hstat-lbl">sem mensalidade</span></div>
+<section id="hero" class="snap-strong">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-badge">LEVEL UP YOUR ENGLISH</div>
+      <h1>
+        <span class="line1">APRENDA INGLÊS</span>
+        <span class="line2">jogando seus games</span>
+      </h1>
+      <p class="hero-desc">
+        Um método de ensino que usa conversação em jogos 1:1. Aprenda o inglês que você gosta, na prática. Ideal para quem tem vontade de aprender e poucas oportunidades de praticar — aqui não precisa ter vergonha de errar, vamos estar sempre prontos para te ajudar e deixar você confiante.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg" onclick="open_m('signup')">
+          Primeira aula grátis
+        </button>
+        <a href="#metodo" class="btn btn-outline btn-lg">Ver o método</a>
+      </div>
+      <p class="hero-note">
+        <i class="fas fa-check-circle"></i>
+        Sem registro obrigatório para a aula experimental.
+      </p>
+      <div class="hero-games">
+        <span class="game-pill"><i class="fas fa-cube"></i> Minecraft</span>
+        <span class="game-pill"><i class="fas fa-crosshairs"></i> Fortnite</span>
+        <span class="game-pill"><i class="fas fa-video"></i> Via Zoom</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat">
+          <span class="hstat-val">1-on-1</span>
+          <span class="hstat-lbl">mesmo professor sempre</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-val">50min</span>
+          <span class="hstat-lbl">por aula, sem enrolação</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-val">¥0</span>
+          <span class="hstat-lbl">para experimentar</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<div id="features">
-  <div class="section">
-    <span class="section-label">Por que SpeakSquad</span>
-    <h2 class="section-title">Aprenda falando, não decorando</h2>
-    <p class="section-sub">Games criam situações reais onde o inglês é necessário — e você aprende naturalmente.</p>
+<!-- MÉTODO -->
+<section id="metodo" class="snap-strong">
+  <div class="wrap">
+    <span class="sec-label">O método</span>
+    <h2 class="sec-title">Esse método vai funcionar com você</h2>
+    <p class="sec-sub">Quando forçamos algo que não gostamos, fica estressante — e fácil de desistir. Quando fazemos algo que já temos interesse, é mais fácil manter o hábito.</p>
+    <p class="sec-sub">Esse método de conversação em inglês através de jogos pega algo que você já gosta — jogar — e usa isso para desenvolver e melhorar sua habilidade no idioma.</p>
+  </div>
+</section>
+
+<!-- FEATURES V1 -->
+<section id="features" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">Diferenciais do método</span>
+    <h2 class="sec-title">Aprenda falando, não decorando</h2>
+    <p class="sec-sub">Games criam situações reais onde o inglês é necessário — e você aprende naturalmente.</p>
     <div class="feat-grid">
       <div class="feat-card">
         <div class="feat-icon"><i class="fas fa-user-check"></i></div>
         <h3>Professor dedicado</h3>
-        <p>Um professor que conhece seu progresso, seu nível e seus jogos favoritos. Sem surpresas, sem substitutos.</p>
+        <p>Um professor que conhece seu progresso, seu nível e seus jogos favoritos. Ele atua como tutor, dando instruções específicas para você.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon"><i class="fas fa-comments"></i></div>
         <h3>Conversação real</h3>
-        <p>Inglês usado em contexto — dar ordens no jogo, descrever estratégias, reagir a situações. Não é sala de aula.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon"><i class="fas fa-coins"></i></div>
-        <h3>Créditos sem pressão</h3>
-        <p>Compre quando quiser. 1 crédito = 1 aula de 50 minutos. Sem mensalidade, sem expiração, sem multa.</p>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon"><i class="fas fa-globe-asia"></i></div>
-        <h3>Tokyo e Brasília</h3>
-        <p>Horários disponíveis nos dois fusos. O sistema converte automaticamente — você agenda no seu tempo.</p>
+        <p>Não é sala de aula, ficando na revisão de gramática e regras. Usamos inglês em contexto — dar ordens no jogo, descrever estratégias, reagir a situações.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon"><i class="fas fa-chart-line"></i></div>
         <h3>Progresso acompanhado</h3>
-        <p>Vocabulário da aula, feedback por escrito, histórico de evolução. Você sai de cada aula sabendo o que aprendeu.</p>
+        <p>Cada aula gera uma entrada no seu histórico. O professor envia relatório com vocabulário trabalhado e pontos a treinar. Você sai sabendo o que aprendeu.</p>
       </div>
       <div class="feat-card">
-        <div class="feat-icon"><i class="fas fa-lock"></i></div>
-        <h3>Pagamento seguro</h3>
-        <p>Stripe processa o pagamento com criptografia completa. Seus dados não são armazenados aqui.</p>
+        <div class="feat-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>Ambiente seguro</h3>
+        <p>Você fica à vontade para se expressar e treinar seu inglês, sem julgamento, num ambiente descontraído.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fas fa-gamepad"></i></div>
+        <h3>Diversão de verdade</h3>
+        <p>O principal objetivo é ser uma forma divertida de aprender inglês. Seu tutor também gosta de jogos — a diversão durante a aula é garantida.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fas fa-bolt"></i></div>
+        <h3>Simplicidade</h3>
+        <p>Para começar: cadastro, compra de créditos (1 crédito = 1 aula) e agendamento. Sem burocracia no meio do caminho.</p>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- HOW IT WORKS -->
-<div id="how">
-  <div class="section">
-    <span class="section-label">Como funciona</span>
-    <h2 class="section-title">Três passos para começar</h2>
-    <p class="section-sub">Da conta criada até a primeira aula, são menos de 10 minutos.</p>
-    <div class="steps-row">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h3>Crie sua conta</h3>
-        <p>Informe seu nome, email, nível de inglês e qual jogo você prefere. Pronto.</p>
+<!-- FLUXO DA AULA -->
+<section id="fluxo" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">Estrutura da aula</span>
+    <h2 class="sec-title">Como é o fluxo da aula</h2>
+    <p class="sec-sub">Cada aula é dividida em três partes — não é só "entrar e jogar".</p>
+    <div class="fluxo-grid">
+      <div class="fluxo-card" data-num="1">
+        <span class="fluxo-tag">Parte 1</span>
+        <h3>Introdução</h3>
+        <p>Conversa introdutória e tranquila. Muitas vezes usada para revisar o que já foi visto e alinhar o foco daquela aula.</p>
       </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h3>Compre créditos</h3>
-        <p>Escolha entre 1, 5 ou 10 créditos. Pague via Stripe. Os créditos não expiram.</p>
+      <div class="fluxo-card" data-num="2">
+        <span class="fluxo-tag">Parte 2</span>
+        <h3>Gameplay</h3>
+        <p>Durante o jogo, o professor ensina e ajuda o aluno a se expressar com frases e termos de forma natural, no contexto do que está acontecendo.</p>
       </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3>Agende e jogue</h3>
-        <p>Escolha um horário disponível, receba o link Zoom e apareça para jogar e aprender.</p>
+      <div class="fluxo-card" data-num="3">
+        <span class="fluxo-tag">Parte 3</span>
+        <h3>Revisão</h3>
+        <p>Repetimos palavras e frases usadas durante o jogo, focando no que foi mais difícil — e ajudamos o aluno a sair confiante.</p>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- PRICING -->
-<div id="pricing">
-  <div class="section">
-    <span class="section-label">Preços</span>
-    <h2 class="section-title">Simples. Sem surpresas.</h2>
-    <p class="section-sub">1 crédito = 1 aula de 50 minutos. Compre o que precisar.</p>
+<!-- AULA GRÁTIS -->
+<section id="como" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">Como funciona</span>
+    <h2 class="sec-title">Sua 1ª aula é gratuita</h2>
+    <p class="sec-sub">Não há perseguição de vendas depois da experiência — fique à vontade. Sem spam.</p>
+    <div class="gratis-banner">
+      <i class="fas fa-check-circle"></i>
+      Da conta criada até a aula agendada, o processo leva poucos minutos.
+    </div>
+    <div class="gratis-steps">
+      <div class="gratis-step">
+        <span class="gratis-num">PASSO 1</span>
+        <h3>Registre-se</h3>
+        <p>Insira nome, email e senha para criar sua conta.</p>
+      </div>
+      <div class="gratis-step">
+        <span class="gratis-num">PASSO 2</span>
+        <h3>Complete seu perfil</h3>
+        <p>Escolha seu jogo de preferência e conte um pouco sobre você.</p>
+      </div>
+      <div class="gratis-step">
+        <span class="gratis-num">PASSO 3</span>
+        <h3>Agende sua aula</h3>
+        <p>Escolha o horário que funciona melhor para você.</p>
+      </div>
+      <div class="gratis-step">
+        <span class="gratis-num">PASSO 4</span>
+        <h3>Entre na aula</h3>
+        <p>Acesse a videoconferência pelo seu perfil ou pelo link no email. Pronto — aproveite sua primeira aula grátis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING V1 layout, V2 tom -->
+<section id="preco" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">Preço</span>
+    <h2 class="sec-title">Simples. Sem letras miúdas.</h2>
+    <p class="sec-sub">1 crédito = 1 aula de 50 minutos. Compre o que precisar, quando precisar.</p>
     <div class="pricing-grid">
-
       <div class="price-card">
         <div class="price-name">Unitário</div>
         <div class="price-amount">
@@ -684,13 +909,13 @@
         </div>
         <div class="price-per">por aula</div>
         <ul class="price-list">
-          <li><i class="fas fa-check"></i> 1 aula de 50 min</li>
+          <li><i class="fas fa-check"></i> 1 aula de 50 minutos</li>
           <li><i class="fas fa-check"></i> Sem expiração</li>
           <li><i class="fas fa-check"></i> Flexibilidade total</li>
         </ul>
-        <button class="btn btn-outline" onclick="openModal('purchase')">Comprar</button>
+        <button class="btn btn-outline" onclick="open_m('signup')">Comprar</button>
+        <div class="price-footer">Sem contrato.<br>Sem matrícula.</div>
       </div>
-
       <div class="price-card featured">
         <div class="price-tag">Mais popular</div>
         <div class="price-name">Pacote 5</div>
@@ -699,14 +924,14 @@
         </div>
         <div class="price-per"><strong>¥1.700 por aula</strong> — economize 15%</div>
         <ul class="price-list">
-          <li><i class="fas fa-check"></i> 5 aulas de 50 min</li>
+          <li><i class="fas fa-check"></i> 5 aulas de 50 minutos</li>
           <li><i class="fas fa-check"></i> Sem expiração</li>
           <li><i class="fas fa-check"></i> Flexibilidade total</li>
           <li><i class="fas fa-check"></i> Prioridade no agendamento</li>
         </ul>
-        <button class="btn btn-primary" onclick="openModal('purchase')">Comprar</button>
+        <button class="btn btn-primary" onclick="open_m('signup')">Comprar</button>
+        <div class="price-footer">Sem contrato.<br>Teste uma aula grátis antes.</div>
       </div>
-
       <div class="price-card">
         <div class="price-name">Pacote 10</div>
         <div class="price-amount">
@@ -714,165 +939,206 @@
         </div>
         <div class="price-per"><strong>¥1.400 por aula</strong> — economize 30%</div>
         <ul class="price-list">
-          <li><i class="fas fa-check"></i> 10 aulas de 50 min</li>
+          <li><i class="fas fa-check"></i> 10 aulas de 50 minutos</li>
           <li><i class="fas fa-check"></i> Sem expiração</li>
           <li><i class="fas fa-check"></i> Flexibilidade total</li>
           <li><i class="fas fa-check"></i> Prioridade no agendamento</li>
         </ul>
-        <button class="btn btn-outline" onclick="openModal('purchase')">Comprar</button>
+        <button class="btn btn-outline" onclick="open_m('signup')">Comprar</button>
+        <div class="price-footer">Sem contrato.<br>Sem surpresas.</div>
       </div>
-
     </div>
   </div>
-</div>
+</section>
 
-<!-- FOOTER -->
+<!-- REQUISITOS -->
+<section id="requisitos" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">Antes de começar</span>
+    <h2 class="sec-title">O que você precisa ter</h2>
+    <p class="sec-sub">Nada complicado — é bem provável que você já tenha tudo isso.</p>
+    <div class="req-list">
+      <div class="req-item">
+        <div class="req-icon"><i class="fas fa-gamepad"></i></div>
+        <span>Jogo instalado e atualizado<span class="req-opt">No seu console ou PC</span></span>
+      </div>
+      <div class="req-item">
+        <div class="req-icon"><i class="fas fa-video"></i></div>
+        <span>Zoom<span class="req-opt">Para a videochamada com o professor</span></span>
+      </div>
+      <div class="req-item">
+        <div class="req-icon"><i class="fas fa-desktop"></i></div>
+        <span>PC, tablet ou smartphone<span class="req-opt">Qualquer um serve</span></span>
+      </div>
+      <div class="req-item">
+        <div class="req-icon"><i class="fas fa-headset"></i></div>
+        <span>Fone com microfone<span class="req-opt">Opcional, mas recomendado</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE V2 -->
+<section id="sobre" class="snap-strong">
+  <div class="wrap">
+    <span class="sec-label">Sobre</span>
+    <h2 class="sec-title">O que é a SpeakSquad?</h2>
+    <div class="sobre-grid">
+      <div class="sobre-visual">
+        <div class="sobre-avatar">🎮</div>
+        <div class="s-name">Hugo</div>
+        <div class="s-role">Fundador · SpeakSquad</div>
+        <div class="sobre-tags">
+          <span class="sobre-tag">Minecraft</span>
+          <span class="sobre-tag">Fortnite</span>
+          <span class="sobre-tag">EIKEN</span>
+          <span class="sobre-tag">Tokyo</span>
+          <span class="sobre-tag">1-on-1</span>
+        </div>
+      </div>
+      <div class="sobre-content">
+        <p>Eu sou Hugo, fundador da SpeakSquad. Comecei porque via alunos saindo de aulas de inglês via games achando "foi legal jogar com o professor" — o que não é ruim, é parte do método. Mas o objetivo real é outro: aprendizado de verdade, o resultado que os pais esperam.</p>
+        <p>Reparei em três coisas que atrapalham esse resultado. Aulas sem direção pedagógica viram só diversão. Trocar de professor toda semana quebra a continuidade de quem está começando. E quando irmãos fazem aula juntos, é comum os dois caírem no português no meio da aula — não por má vontade, é só o caminho mais fácil.</p>
+        <p>A SpeakSquad usa um método que já existe no mercado — inglês através de jogos — e resolve esses três pontos: continuidade com o mesmo professor, modo de jogo escolhido para ensinar inglês (não só para divertir), e atenção real ao ritmo de cada aluno.</p>
+        <p>Quem dá as aulas ainda sou eu. Não terceirizo — hoje (embora pense em formar outros professores no mesmo método, no futuro). Não é app, não é IA. É uma pessoa acompanhando o progresso do seu filho, com critério sobre o que faz uma aula funcionar.</p>
+        <button class="btn btn-primary" onclick="open_m('signup')" style="margin-top:0.75rem;">Agendar aula experimental</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL V2 -->
+<section id="cta" class="snap-strong">
+  <div class="wrap">
+    <span class="sec-label" style="justify-content:center;display:flex;">Interessou?</span>
+    <h2>Comece sua primeira<br>aula gratuita já.</h2>
+    <p>Sem registro complicado. Sem cobrança escondida.<br>50 minutos de aula real — e depois você decide.</p>
+    <button class="btn btn-primary btn-lg" onclick="open_m('signup')">Agendar aula experimental</button>
+    <p class="fine">Disponível para crianças e adolescentes no Japão.<br>Aulas via Zoom · Minecraft ou Fortnite · Tokyo timezone.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">Perguntas frequentes</span>
+    <h2 class="sec-title">FAQ</h2>
+    <p class="sec-sub">Se sua dúvida não estiver aqui, é só perguntar antes da aula experimental.</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Meu filho precisa já saber inglês para começar?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Não. Atendemos desde quem nunca estudou até níveis avançados. Na aula experimental avaliamos o nível atual e ajustamos o ritmo a partir daí.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Os créditos expiram?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Não. Uma vez comprado, o crédito é seu — sem prazo de validade. Você agenda quando fizer sentido para a sua rotina.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Posso cancelar ou remarcar uma aula agendada?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Sim, com antecedência mínima informada no momento do agendamento. Avisos de última hora podem consumir o crédito da aula.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Dois irmãos podem fazer aula juntos?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Preferimos aulas individuais. Na experiência de quem já ensinou irmãos juntos, é comum as crianças caírem no português entre si durante a aula — o que reduz o tempo real de prática em inglês.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Preciso ter o jogo comprado antes da aula experimental?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Sim, o aluno precisa ter Minecraft ou Fortnite instalado e funcionando no dispositivo que for usar, já que a aula acontece dentro do jogo.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Como funciona o pagamento?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Pelo Stripe, com criptografia completa. Seus dados de cartão não ficam armazenados na SpeakSquad.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <p>&copy; 2025 SpeakSquad — Level Up Your English</p>
-  <p><a href="#">Privacidade</a> &nbsp;·&nbsp; <a href="#">Termos</a> &nbsp;·&nbsp; <a href="#">Contato</a></p>
+  <div class="wrap">
+    <p style="margin-bottom:0.35rem;">© 2025 SpeakSquad &nbsp;·&nbsp; <a href="#">Privacidade</a> &nbsp;·&nbsp; <a href="#">Termos</a> &nbsp;·&nbsp; <a href="#">Contato</a></p>
+    <p>Level Up Your English</p>
+  </div>
 </footer>
 
-<!-- MODAL: LOGIN -->
-<div class="modal-overlay" id="modal-login" onclick="overlayClick(event,'login')">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="lbl-login">
-    <button class="modal-close" onclick="closeModal('login')" aria-label="Fechar">&times;</button>
-    <h2 id="lbl-login">Entrar no <span>SpeakSquad</span></h2>
-    <form onsubmit="submitLogin(event)">
+<!-- MODAL SIGNUP (V1 full) -->
+<div class="overlay" id="overlay-signup" onclick="oc(event,'signup')">
+  <div class="modal">
+    <button class="modal-x" onclick="close_m('signup')">&times;</button>
+    <h2>Criar conta no <span>SpeakSquad</span></h2>
+    <form onsubmit="e=>{e.preventDefault();close_m('signup');}">
+      <div class="field"><label>Nome</label><input type="text" placeholder="Seu nome" required autocomplete="name"></div>
+      <div class="field"><label>Email</label><input type="email" placeholder="seu@email.com" required autocomplete="email"></div>
+      <div class="field"><label>Senha</label><input type="password" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="new-password"></div>
       <div class="field">
-        <label for="l-email">Email</label>
-        <input type="email" id="l-email" placeholder="seu@email.com" required autocomplete="email">
-      </div>
-      <div class="field">
-        <label for="l-pass">Senha</label>
-        <input type="password" id="l-pass" placeholder="••••••••" required autocomplete="current-password">
-      </div>
-      <button type="submit" class="form-btn">Entrar</button>
-    </form>
-    <p class="modal-sub">Não tem conta? <a href="#" onclick="switchModal('login','signup')">Registre-se</a></p>
-  </div>
-</div>
-
-<!-- MODAL: SIGNUP -->
-<div class="modal-overlay" id="modal-signup" onclick="overlayClick(event,'signup')">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="lbl-signup">
-    <button class="modal-close" onclick="closeModal('signup')" aria-label="Fechar">&times;</button>
-    <h2 id="lbl-signup">Criar conta no <span>SpeakSquad</span></h2>
-    <form onsubmit="submitSignup(event)">
-      <div class="field">
-        <label for="s-name">Nome</label>
-        <input type="text" id="s-name" placeholder="Seu nome" required autocomplete="name">
-      </div>
-      <div class="field">
-        <label for="s-email">Email</label>
-        <input type="email" id="s-email" placeholder="seu@email.com" required autocomplete="email">
-      </div>
-      <div class="field">
-        <label for="s-pass">Senha</label>
-        <input type="password" id="s-pass" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="new-password">
-      </div>
-      <div class="field">
-        <label for="s-level">Nível de inglês</label>
-        <select id="s-level" required>
+        <label>Nível de inglês</label>
+        <select required>
           <option value="">Selecione</option>
-          <option value="beginner">Beginner — começo do zero</option>
-          <option value="intermediate">Intermediate — já entendo alguma coisa</option>
-          <option value="advanced">Advanced — quero fluência</option>
+          <option>Beginner — começo do zero</option>
+          <option>Intermediate — já entendo alguma coisa</option>
+          <option>Advanced — quero fluência</option>
         </select>
       </div>
       <div class="field">
-        <label>Qual jogo você prefere?</label>
-        <div class="field-check-row">
+        <label>Jogo preferido</label>
+        <div class="check-row">
           <label class="check-item"><input type="checkbox" value="minecraft"><span>Minecraft</span></label>
           <label class="check-item"><input type="checkbox" value="fortnite"><span>Fortnite</span></label>
         </div>
       </div>
-      <button type="submit" class="form-btn">Criar conta</button>
+      <button type="submit" class="modal-btn">Criar conta</button>
     </form>
-    <p class="modal-sub">Já tem conta? <a href="#" onclick="switchModal('signup','login')">Entrar</a></p>
+    <p class="modal-foot">Já tem conta? <a href="#" onclick="sw('signup','login')">Entrar</a></p>
   </div>
 </div>
 
-<!-- MODAL: PURCHASE -->
-<div class="modal-overlay" id="modal-purchase" onclick="overlayClick(event,'purchase')">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="lbl-purchase">
-    <button class="modal-close" onclick="closeModal('purchase')" aria-label="Fechar">&times;</button>
-    <h2 id="lbl-purchase">Escolha seu <span>pacote</span></h2>
-    <form onsubmit="submitPurchase(event)">
-      <div class="field">
-        <label for="pkg-select">Pacote</label>
-        <select id="pkg-select" required>
-          <option value="">Selecione</option>
-          <option value="unitario">Unitário — 1 crédito (¥2.000)</option>
-          <option value="medio">Pacote 5 — 5 créditos (¥8.500) · -15%</option>
-          <option value="grande">Pacote 10 — 10 créditos (¥14.000) · -30%</option>
-        </select>
-      </div>
-      <button type="submit" class="form-btn"><i class="fas fa-lock"></i> Pagar via Stripe</button>
+<!-- MODAL LOGIN (V1) -->
+<div class="overlay" id="overlay-login" onclick="oc(event,'login')">
+  <div class="modal">
+    <button class="modal-x" onclick="close_m('login')">&times;</button>
+    <h2>Entrar no <span>SpeakSquad</span></h2>
+    <form onsubmit="e=>{e.preventDefault();close_m('login');}">
+      <div class="field"><label>Email</label><input type="email" placeholder="seu@email.com" required autocomplete="email"></div>
+      <div class="field"><label>Senha</label><input type="password" placeholder="••••••••" required autocomplete="current-password"></div>
+      <button type="submit" class="modal-btn">Entrar</button>
     </form>
+    <p class="modal-foot">Não tem conta? <a href="#" onclick="sw('login','signup')">Registre-se</a></p>
   </div>
 </div>
 
 <script>
-  // ── nav ──
-  function toggleNav() {
-    const b = document.getElementById('burger');
-    const m = document.getElementById('mobileNav');
-    const open = m.classList.toggle('open');
-    b.classList.toggle('open', open);
-    b.setAttribute('aria-expanded', open);
-  }
-  function closeNav() {
-    document.getElementById('burger').classList.remove('open');
-    document.getElementById('mobileNav').classList.remove('open');
-  }
+function toggleNav(){const b=document.getElementById('burger'),m=document.getElementById('mobileNav'),o=m.classList.toggle('open');b.classList.toggle('open',o);}
+function closeNav(){document.getElementById('burger').classList.remove('open');document.getElementById('mobileNav').classList.remove('open');}
+window.addEventListener('resize',()=>{if(window.innerWidth>768)closeNav();});
+function open_m(id){document.getElementById('overlay-'+id)?.classList.add('open');document.body.style.overflow='hidden';}
+function close_m(id){document.getElementById('overlay-'+id)?.classList.remove('open');document.body.style.overflow='';}
+function oc(e,id){if(e.target===e.currentTarget)close_m(id);}
+function sw(f,t){close_m(f);setTimeout(()=>open_m(t),120);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));document.body.style.overflow='';}});
 
-  // close mobile nav on resize to desktop
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) closeNav();
-  });
-
-  // ── modals ──
-  function openModal(id) {
-    document.getElementById('modal-' + id).classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal(id) {
-    document.getElementById('modal-' + id).classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  function overlayClick(e, id) {
-    if (e.target === e.currentTarget) closeModal(id);
-  }
-  function switchModal(from, to) {
-    closeModal(from);
-    setTimeout(() => openModal(to), 150);
-  }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.modal-overlay.open').forEach(m => {
-        m.classList.remove('open');
-        document.body.style.overflow = '';
-      });
-    }
-  });
-
-  // ── forms ──
-  function submitLogin(e) {
-    e.preventDefault();
-    // TODO: POST /api/auth/login
-    closeModal('login');
-  }
-  function submitSignup(e) {
-    e.preventDefault();
-    // TODO: POST /api/auth/register/student
-    closeModal('signup');
-  }
-  function submitPurchase(e) {
-    e.preventDefault();
-    // TODO: POST /api/payments/checkout/stripe
-    closeModal('purchase');
-  }
+function toggleFaq(btn){
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
 </script>
 </body>
 </html>
