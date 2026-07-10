@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="SpeakSquad — Aprenda inglês jogando Minecraft e Fortnite. Aulas 1-on-1. Tokyo. Level Up Your English.">
+  <meta name="description" content="SpeakSquad: aprenda inglês jogando Minecraft e Fortnite. Aulas 1-on-1. Tokyo. Level Up Your English.">
   <meta name="theme-color" content="#00d9ff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>SpeakSquad — Level Up Your English</title>
+  <title>SpeakSquad: Level Up Your English</title>
+  <link rel="alternate" hreflang="pt-BR" href="https://speaksquad.vercel.app/">
+  <link rel="alternate" hreflang="ja" href="https://speaksquad.vercel.app/jp/">
+  <link rel="alternate" hreflang="x-default" href="https://speaksquad.vercel.app/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -18,20 +21,20 @@
     :root {
       --cyan:    #00d9ff;
       --magenta: #ff006e;
-      --violet:  #7c3aed;
+      --violet:  #a78bfa;
       --bg:      #0d1117;
       --bg2:     #161b22;
       --bg3:     #1c2333;
       --border:  #21262d;
       --border2: #30363d;
-      --text:    #e6edf3;
+      --text:    #f7fafc;
       --muted:   #8b949e;
-      --soft:    #cbd5e1;
+      --soft:    #f1f5f9;
       --success: #00d9a3;
       --warn:    #f0a500;
       --display: 'Space Mono', monospace;
       --mono:    'IBM Plex Mono', monospace;
-      --body:    'Inter', system-ui, sans-serif;
+      --body:    'Atkinson Hyperlegible', system-ui, sans-serif;
       --r: 6px;
       --nav-h: 64px;
     }
@@ -83,7 +86,7 @@
     }
     .logo-mark {
       width: 32px; height: 32px; border-radius: 7px;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      background: linear-gradient(135deg, var(--cyan), var(--magenta));
       display: flex; align-items: center; justify-content: center;
       font-family: var(--display); font-size: 0.75rem; font-weight: 700;
       color: #0d1117;
@@ -91,6 +94,8 @@
     .logo-text {
       font-family: var(--display); font-size: 1.05rem; font-weight: 700;
       color: var(--text); letter-spacing: 0.5px;
+      text-decoration: underline; text-decoration-color: var(--magenta);
+      text-decoration-thickness: 2px; text-underline-offset: 3px;
     }
     .logo-text span { color: var(--cyan); }
 
@@ -102,6 +107,36 @@
     .nav-links a:hover { color: var(--text); }
 
     .nav-cta { display: flex; gap: 0.75rem; align-items: center; }
+
+    /* Language switcher */
+    .lang-switch {
+      display: flex; align-items: center; gap: 0.3rem;
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 100px; padding: 0.35rem 0.5rem;
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 600;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .lang-switch a {
+      padding: 0.2rem 0.55rem; border-radius: 100px;
+      color: var(--muted); text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .lang-switch a.active { background: var(--cyan); color: #0d1117; }
+    .lang-switch a:not(.active):hover { color: var(--text); }
+    .lang-switch .divider { color: var(--border2); font-size: 0.65rem; }
+
+    .mobile-lang-switch {
+      display: flex; gap: 0.5rem; margin: 1rem 0 0.5rem;
+      padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+    .mobile-lang-switch a {
+      flex: 1; text-align: center; padding: 0.5rem;
+      border-radius: var(--r); font-family: var(--mono);
+      font-size: 0.8rem; font-weight: 600;
+      background: var(--bg3); color: var(--muted); text-decoration: none;
+      border: 1px solid var(--border2);
+    }
+    .mobile-lang-switch a.active { background: var(--cyan); color: #0d1117; border-color: var(--cyan); }
 
     .burger {
       display: none; background: none; border: none; cursor: pointer;
@@ -147,9 +182,11 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--cyan) 0%, #00a8c8 100%);
       color: #0d1117; font-weight: 700;
+      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
     }
     .btn-primary:hover {
-      box-shadow: 0 0 28px rgba(0,217,255,0.45);
+      background: linear-gradient(135deg, var(--magenta) 0%, #d1005c 100%);
+      box-shadow: 0 0 28px rgba(255,0,110,0.45);
       transform: translateY(-1px);
     }
     .btn-primary:active { transform: translateY(0); }
@@ -157,16 +194,23 @@
     .btn-outline {
       background: transparent; color: var(--cyan);
       border-color: rgba(0,217,255,0.4);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
     }
     .btn-outline:hover {
-      background: rgba(0,217,255,0.08);
+      background: rgba(0,217,255,0.12);
       border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 22px rgba(0,217,255,0.3);
     }
 
     .btn-ghost {
       background: transparent; color: var(--muted); border-color: var(--border2);
+      transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
     }
-    .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+    .btn-ghost:hover {
+      color: var(--magenta); border-color: var(--magenta);
+      background: rgba(255,0,110,0.08);
+    }
 
     .btn-lg { padding: 0.85rem 2rem; font-size: 1rem; border-radius: 8px; }
 
@@ -176,17 +220,17 @@
 
     .sec-label {
       font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
-      color: var(--cyan); letter-spacing: 2px; text-transform: uppercase;
+      color: var(--violet); letter-spacing: 2px; text-transform: uppercase;
       display: block; margin-bottom: 0.75rem;
     }
     h2.sec-title {
       font-family: var(--display);
       font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      font-weight: 700; line-height: 1.15; color: var(--text);
+      font-weight: 700; line-height: 1.15; color: var(--cyan);
       margin-bottom: 0.75rem; letter-spacing: -0.5px;
     }
     .sec-sub {
-      font-size: 1rem; color: var(--muted); line-height: 1.75; max-width: 560px;
+      font-size: 1rem; color: var(--soft); line-height: 1.75; max-width: 560px;
     }
 
     /* ── HERO ── */
@@ -231,13 +275,12 @@
     h1 .line1 { display: block; color: var(--text); }
     h1 .line2 {
       display: block;
-      background: linear-gradient(90deg, var(--cyan), var(--magenta));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
+    h1 .line2 .lower { color: var(--cyan); text-transform: none; }
+    h1 .line2 .accent { color: var(--magenta); }
 
     .hero-desc {
-      font-size: 1.05rem; color: var(--muted);
+      font-size: 1.05rem; color: var(--soft);
       max-width: 500px; line-height: 1.75; margin-bottom: 2.25rem;
     }
 
@@ -295,7 +338,7 @@
     .problem-card h3 {
       font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem;
     }
-    .problem-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+    .problem-card p { font-size: 0.875rem; color: var(--soft); line-height: 1.7; }
 
     /* ── MÉTODO (motivação) ── */
     #metodo {
@@ -320,7 +363,7 @@
     }
     .feat-card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--cyan), var(--violet));
+      background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--violet));
       opacity: 0; transition: opacity 0.2s;
     }
     .feat-card:hover {
@@ -335,8 +378,17 @@
       border-radius: 8px; display: flex; align-items: center; justify-content: center;
       font-size: 1.2rem; color: var(--cyan); margin-bottom: 1.1rem;
     }
+    /* Ícones alternados: cyan, magenta, violet */
+    .feat-card:nth-child(3n+2) .feat-icon {
+      background: rgba(255,0,110,0.08); border-color: rgba(255,0,110,0.18);
+      color: var(--magenta);
+    }
+    .feat-card:nth-child(3n+3) .feat-icon {
+      background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.2);
+      color: var(--violet);
+    }
     .feat-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
-    .feat-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+    .feat-card p { font-size: 0.875rem; color: var(--soft); line-height: 1.7; }
 
     /* ── GAME MODES SIGNATURE ── */
     #modos { background: var(--bg2); border-top: 1px solid var(--border); }
@@ -410,11 +462,11 @@
     }
     .fluxo-tag {
       font-family: var(--mono); font-size: 0.68rem; font-weight: 600;
-      color: var(--cyan); letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--magenta); letter-spacing: 1.5px; text-transform: uppercase;
       margin-bottom: 0.75rem; display: block;
     }
     .fluxo-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 0.6rem; }
-    .fluxo-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.75; position: relative; z-index: 1; }
+    .fluxo-card p { font-size: 0.875rem; color: var(--soft); line-height: 1.75; position: relative; z-index: 1; }
 
     /* ── AULA GRÁTIS (4 passos) ── */
     #gratis { background: var(--bg); }
@@ -437,10 +489,10 @@
     }
     .gratis-num {
       font-family: var(--mono); font-size: 0.7rem; font-weight: 600;
-      color: var(--cyan); letter-spacing: 1px; margin-bottom: 0.6rem; display: block;
+      color: var(--magenta); letter-spacing: 1px; margin-bottom: 0.6rem; display: block;
     }
     .gratis-step h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
-    .gratis-step p { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
+    .gratis-step p { font-size: 0.83rem; color: var(--soft); line-height: 1.65; }
 
     /* ── REQUISITOS ── */
     #requisitos { background: var(--bg2); border-top: 1px solid var(--border); }
@@ -481,7 +533,7 @@
     .faq-a {
       max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
     }
-    .faq-a-inner { padding: 0 1.4rem 1.25rem; font-size: 0.875rem; color: var(--muted); line-height: 1.75; }
+    .faq-a-inner { padding: 0 1.4rem 1.25rem; font-size: 0.875rem; color: var(--soft); line-height: 1.75; }
     .faq-item.open .faq-a { max-height: 300px; }
 
     /* ── HOW (V1 — 3 cards grid) ── */
@@ -503,7 +555,7 @@
       box-shadow: 0 0 24px rgba(0,217,255,0.25);
     }
     .step h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
-    .step p { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+    .step p { font-size: 0.875rem; color: var(--soft); line-height: 1.65; }
 
     /* ── SOBRE (V2) ── */
     #sobre { background: var(--bg2); border-top: 1px solid var(--border); }
@@ -519,7 +571,7 @@
     }
     .sobre-avatar {
       width: 80px; height: 80px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--violet), var(--cyan));
+      background: linear-gradient(135deg, var(--magenta), var(--violet));
       display: flex; align-items: center; justify-content: center; font-size: 2rem;
     }
     .sobre-visual .s-name { font-weight: 700; color: var(--text); font-size: 1.05rem; }
@@ -530,7 +582,7 @@
       border-radius: 100px; padding: 0.22rem 0.7rem;
       font-size: 0.72rem; color: var(--muted);
     }
-    .sobre-content p { font-size: 0.975rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.1rem; }
+    .sobre-content p { font-size: 0.975rem; color: var(--soft); line-height: 1.8; margin-bottom: 1.1rem; }
     .sobre-content p:last-of-type { margin-bottom: 0; }
 
     /* ── PRICING (V1 — 3 cards, V2 tom) ── */
@@ -558,14 +610,14 @@
     }
     .price-tag {
       position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
-      background: linear-gradient(90deg, var(--cyan), var(--violet));
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
       color: #0d1117; font-size: 0.7rem; font-weight: 700;
       padding: 0.28rem 1rem; border-radius: 0 0 6px 6px;
       letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;
     }
     .price-name {
       font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
-      color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+      color: var(--magenta); text-transform: uppercase; letter-spacing: 1px;
       margin-bottom: 1rem; margin-top: 0.5rem;
     }
     .featured .price-name { margin-top: 1.25rem; }
@@ -577,6 +629,7 @@
     .price-unit { font-size: 0.875rem; color: var(--muted); }
     .price-per { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
     .price-per strong { color: var(--success); }
+    .price-per .save-tag { color: var(--magenta); font-weight: 600; }
     .price-list { list-style: none; flex: 1; margin-bottom: 1.5rem; }
     .price-list li {
       display: flex; align-items: flex-start; gap: 0.6rem;
@@ -602,14 +655,14 @@
       font-weight: 700; color: var(--text);
       letter-spacing: -0.5px; margin-bottom: 1rem;
     }
-    #cta p { font-size: 1rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.75; }
+    #cta p { font-size: 1rem; color: var(--soft); margin-bottom: 2rem; line-height: 1.75; }
     #cta .fine { font-size: 0.8rem; color: var(--muted); margin-top: 1.25rem; line-height: 1.7; }
 
     /* ── FOOTER ── */
     footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; text-align: center; }
     footer p { font-size: 0.82rem; color: var(--muted); }
     footer a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
-    footer a:hover { color: var(--cyan); }
+    footer a:hover { color: var(--magenta); }
 
     /* ── MODALS (V1 full signup + login) ── */
     .overlay {
@@ -656,7 +709,7 @@
     .field input::placeholder { color: var(--muted); opacity: 1; }
     .check-row { display: flex; gap: 1.5rem; }
     .check-item { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; }
-    .check-item input { width: 16px; height: 16px; accent-color: var(--cyan); cursor: pointer; }
+    .check-item input { width: 16px; height: 16px; accent-color: var(--magenta); cursor: pointer; }
     .check-item span { font-size: 0.9rem; color: var(--muted); }
     .modal-btn {
       width: 100%; padding: 0.82rem;
@@ -717,6 +770,11 @@
       <li><a href="#faq">FAQ</a></li>
     </ul>
     <div class="nav-cta">
+      <div class="lang-switch" aria-label="Idioma">
+        <a href="/" class="active">PT</a>
+        <span class="divider">|</span>
+        <a href="/jp/">JP</a>
+      </div>
       <button class="btn btn-ghost" onclick="open_m('login')">Entrar</button>
       <button class="btn btn-primary" onclick="open_m('signup')">Primeira aula grátis</button>
     </div>
@@ -736,6 +794,10 @@
     <button class="btn btn-ghost" onclick="open_m('login');closeNav()">Entrar</button>
     <button class="btn btn-primary" onclick="open_m('signup');closeNav()">Aula grátis</button>
   </div>
+  <div class="mobile-lang-switch">
+    <a href="/" class="active">🇧🇷 Português</a>
+    <a href="/jp/">日本語</a>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -745,10 +807,10 @@
       <div class="hero-badge">LEVEL UP YOUR ENGLISH</div>
       <h1>
         <span class="line1">APRENDA INGLÊS</span>
-        <span class="line2">jogando seus games</span>
+        <span class="line2"><span class="lower">jogando</span> <span class="accent">GAMES</span></span>
       </h1>
       <p class="hero-desc">
-        Um método de ensino que usa conversação em jogos 1:1. Aprenda o inglês que você gosta, na prática. Ideal para quem tem vontade de aprender e poucas oportunidades de praticar — aqui não precisa ter vergonha de errar, vamos estar sempre prontos para te ajudar e deixar você confiante.
+        Um método de ensino que usa conversação em jogos 1:1. Aprenda inglês fazendo o que você já gosta de fazer. Ideal para quem tem vontade de aprender e poucas oportunidades de praticar. Aqui não precisa ter vergonha de errar, vamos estar sempre prontos para te ajudar e deixar você confiante.
       </p>
       <div class="hero-cta">
         <button class="btn btn-primary btn-lg" onclick="open_m('signup')">
@@ -788,8 +850,8 @@
   <div class="wrap">
     <span class="sec-label">O método</span>
     <h2 class="sec-title">Esse método vai funcionar com você</h2>
-    <p class="sec-sub">Quando forçamos algo que não gostamos, fica estressante — e fácil de desistir. Quando fazemos algo que já temos interesse, é mais fácil manter o hábito.</p>
-    <p class="sec-sub">Esse método de conversação em inglês através de jogos pega algo que você já gosta — jogar — e usa isso para desenvolver e melhorar sua habilidade no idioma.</p>
+    <p class="sec-sub">Quando forçamos algo que não gostamos, fica estressante e fácil de desistir. Quando fazemos algo que já temos interesse, é mais fácil manter o hábito.</p>
+    <p class="sec-sub">Esse método de conversação em inglês através de jogos pega algo que você já gosta, jogar, para desenvolver e melhorar sua habilidade no idioma.</p>
   </div>
 </section>
 
@@ -798,7 +860,7 @@
   <div class="wrap">
     <span class="sec-label">Diferenciais do método</span>
     <h2 class="sec-title">Aprenda falando, não decorando</h2>
-    <p class="sec-sub">Games criam situações reais onde o inglês é necessário — e você aprende naturalmente.</p>
+    <p class="sec-sub">Games criam situações reais onde o inglês é necessário, e você aprende naturalmente.</p>
     <div class="feat-grid">
       <div class="feat-card">
         <div class="feat-icon"><i class="fas fa-user-check"></i></div>
@@ -808,7 +870,7 @@
       <div class="feat-card">
         <div class="feat-icon"><i class="fas fa-comments"></i></div>
         <h3>Conversação real</h3>
-        <p>Não é sala de aula, ficando na revisão de gramática e regras. Usamos inglês em contexto — dar ordens no jogo, descrever estratégias, reagir a situações.</p>
+        <p>Não é sala de aula, ficando na revisão de gramática e regras. Usamos inglês em contexto: dar ordens no jogo, descrever estratégias, reagir a situações.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon"><i class="fas fa-chart-line"></i></div>
@@ -822,8 +884,8 @@
       </div>
       <div class="feat-card">
         <div class="feat-icon"><i class="fas fa-gamepad"></i></div>
-        <h3>Diversão de verdade</h3>
-        <p>O principal objetivo é ser uma forma divertida de aprender inglês. Seu tutor também gosta de jogos — a diversão durante a aula é garantida.</p>
+        <h3>Diversão</h3>
+        <p>O principal objetivo é ser uma forma divertida de aprender inglês. Seu tutor também gosta de jogos, então a diversão faz parte da aula.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon"><i class="fas fa-bolt"></i></div>
@@ -839,7 +901,7 @@
   <div class="wrap">
     <span class="sec-label">Estrutura da aula</span>
     <h2 class="sec-title">Como é o fluxo da aula</h2>
-    <p class="sec-sub">Cada aula é dividida em três partes — não é só "entrar e jogar".</p>
+    <p class="sec-sub">Cada aula é dividida em três partes, não é só "entrar e jogar".</p>
     <div class="fluxo-grid">
       <div class="fluxo-card" data-num="1">
         <span class="fluxo-tag">Parte 1</span>
@@ -854,7 +916,7 @@
       <div class="fluxo-card" data-num="3">
         <span class="fluxo-tag">Parte 3</span>
         <h3>Revisão</h3>
-        <p>Repetimos palavras e frases usadas durante o jogo, focando no que foi mais difícil — e ajudamos o aluno a sair confiante.</p>
+        <p>Repetimos palavras e frases usadas durante o jogo, focando no que foi mais difícil para o aluno, e o ajudamos a sair confiante.</p>
       </div>
     </div>
   </div>
@@ -865,7 +927,7 @@
   <div class="wrap">
     <span class="sec-label">Como funciona</span>
     <h2 class="sec-title">Sua 1ª aula é gratuita</h2>
-    <p class="sec-sub">Não há perseguição de vendas depois da experiência — fique à vontade. Sem spam.</p>
+    <p class="sec-sub">Não há perseguição de vendas depois da experiência. Fique à vontade, sem spam.</p>
     <div class="gratis-banner">
       <i class="fas fa-check-circle"></i>
       Da conta criada até a aula agendada, o processo leva poucos minutos.
@@ -889,7 +951,7 @@
       <div class="gratis-step">
         <span class="gratis-num">PASSO 4</span>
         <h3>Entre na aula</h3>
-        <p>Acesse a videoconferência pelo seu perfil ou pelo link no email. Pronto — aproveite sua primeira aula grátis.</p>
+        <p>Acesse a videoconferência pelo seu perfil ou pelo link no email. Pronto, aproveite sua primeira aula grátis.</p>
       </div>
     </div>
   </div>
@@ -922,7 +984,7 @@
         <div class="price-amount">
           <span class="price-val">¥8.500</span>
         </div>
-        <div class="price-per"><strong>¥1.700 por aula</strong> — economize 15%</div>
+        <div class="price-per"><strong>¥1.700 por aula</strong>, <span class="save-tag">economize 15%</span></div>
         <ul class="price-list">
           <li><i class="fas fa-check"></i> 5 aulas de 50 minutos</li>
           <li><i class="fas fa-check"></i> Sem expiração</li>
@@ -937,7 +999,7 @@
         <div class="price-amount">
           <span class="price-val">¥14.000</span>
         </div>
-        <div class="price-per"><strong>¥1.400 por aula</strong> — economize 30%</div>
+        <div class="price-per"><strong>¥1.400 por aula</strong>, <span class="save-tag">economize 30%</span></div>
         <ul class="price-list">
           <li><i class="fas fa-check"></i> 10 aulas de 50 minutos</li>
           <li><i class="fas fa-check"></i> Sem expiração</li>
@@ -956,7 +1018,7 @@
   <div class="wrap">
     <span class="sec-label">Antes de começar</span>
     <h2 class="sec-title">O que você precisa ter</h2>
-    <p class="sec-sub">Nada complicado — é bem provável que você já tenha tudo isso.</p>
+    <p class="sec-sub">Nada complicado, é bem provável que você já tenha tudo isso.</p>
     <div class="req-list">
       <div class="req-item">
         <div class="req-icon"><i class="fas fa-gamepad"></i></div>
@@ -988,20 +1050,12 @@
         <div class="sobre-avatar">🎮</div>
         <div class="s-name">Hugo</div>
         <div class="s-role">Fundador · SpeakSquad</div>
-        <div class="sobre-tags">
-          <span class="sobre-tag">Minecraft</span>
-          <span class="sobre-tag">Fortnite</span>
-          <span class="sobre-tag">EIKEN</span>
-          <span class="sobre-tag">Tokyo</span>
-          <span class="sobre-tag">1-on-1</span>
-        </div>
       </div>
       <div class="sobre-content">
-        <p>Eu sou Hugo, fundador da SpeakSquad. Comecei porque via alunos saindo de aulas de inglês via games achando "foi legal jogar com o professor" — o que não é ruim, é parte do método. Mas o objetivo real é outro: aprendizado de verdade, o resultado que os pais esperam.</p>
-        <p>Reparei em três coisas que atrapalham esse resultado. Aulas sem direção pedagógica viram só diversão. Trocar de professor toda semana quebra a continuidade de quem está começando. E quando irmãos fazem aula juntos, é comum os dois caírem no português no meio da aula — não por má vontade, é só o caminho mais fácil.</p>
-        <p>A SpeakSquad usa um método que já existe no mercado — inglês através de jogos — e resolve esses três pontos: continuidade com o mesmo professor, modo de jogo escolhido para ensinar inglês (não só para divertir), e atenção real ao ritmo de cada aluno.</p>
-        <p>Quem dá as aulas ainda sou eu. Não terceirizo — hoje (embora pense em formar outros professores no mesmo método, no futuro). Não é app, não é IA. É uma pessoa acompanhando o progresso do seu filho, com critério sobre o que faz uma aula funcionar.</p>
-        <button class="btn btn-primary" onclick="open_m('signup')" style="margin-top:0.75rem;">Agendar aula experimental</button>
+        <p>A SpeakSquad começou porque eu, Hugo, fundador da SpeakSquad, percebi que oportunidades estavam sendo perdidas. Alunos que gostam de jogar e querem aprender inglês acabam a aula apenas com a sensação de que foi legal jogar com o professor. Isso não é ruim, é inclusive um dos objetivos do método. Porém visamos o aprendizado e o progresso do aluno, um resultado real que nós e os pais querem para seus filhos.</p>
+        <p>Também percebi outros pontos. Deixar as aulas muito livres, sem uma direção programada, pode prejudicar o aprendizado. A troca constante de professores não é a melhor estratégia para quem está começando. E, em outros métodos, é comum permitir que duas ou mais crianças, muitas vezes irmãos, façam aula juntas. Isso também não é ruim, mas muitas vezes as crianças acabam conversando entre si no idioma original durante a "aula de inglês".</p>
+        <p>Peguei um método que já existe no mercado, aulas de inglês via jogos, e adicionei o que faltava: continuidade pedagógica, modo de jogo escolhido com a intenção de ensinar inglês, e adaptação real para cada aluno.</p>
+        <p>Ainda sou eu quem dá as aulas. Não terceirizo, embora eu pense em treinar novos professores baseados no meu método no futuro. Não é um app, nem IA. É uma pessoa que se importa com o desenvolvimento do seu filho e tem critérios claros sobre como uma boa aula funciona.</p>
       </div>
     </div>
   </div>
@@ -1012,7 +1066,7 @@
   <div class="wrap">
     <span class="sec-label" style="justify-content:center;display:flex;">Interessou?</span>
     <h2>Comece sua primeira<br>aula gratuita já.</h2>
-    <p>Sem registro complicado. Sem cobrança escondida.<br>50 minutos de aula real — e depois você decide.</p>
+    <p>Sem registro complicado. Sem cobrança escondida.<br>50 minutos de aula real, e depois você decide.</p>
     <button class="btn btn-primary btn-lg" onclick="open_m('signup')">Agendar aula experimental</button>
     <p class="fine">Disponível para crianças e adolescentes no Japão.<br>Aulas via Zoom · Minecraft ou Fortnite · Tokyo timezone.</p>
   </div>
@@ -1037,7 +1091,7 @@
           Os créditos expiram?
           <i class="fas fa-plus"></i>
         </button>
-        <div class="faq-a"><div class="faq-a-inner">Não. Uma vez comprado, o crédito é seu — sem prazo de validade. Você agenda quando fizer sentido para a sua rotina.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">Não. Uma vez comprado, o crédito é seu, sem prazo de validade. Você agenda quando fizer sentido para a sua rotina.</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
@@ -1051,7 +1105,7 @@
           Dois irmãos podem fazer aula juntos?
           <i class="fas fa-plus"></i>
         </button>
-        <div class="faq-a"><div class="faq-a-inner">Preferimos aulas individuais. Na experiência de quem já ensinou irmãos juntos, é comum as crianças caírem no português entre si durante a aula — o que reduz o tempo real de prática em inglês.</div></div>
+        <div class="faq-a"><div class="faq-a-inner">Preferimos aulas individuais. Na experiência de quem já ensinou irmãos juntos, é comum as crianças caírem no português entre si durante a aula, o que reduz o tempo real de prática em inglês.</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
@@ -1091,9 +1145,9 @@
         <label>Nível de inglês</label>
         <select required>
           <option value="">Selecione</option>
-          <option>Beginner — começo do zero</option>
-          <option>Intermediate — já entendo alguma coisa</option>
-          <option>Advanced — quero fluência</option>
+          <option>Beginner (começo do zero)</option>
+          <option>Intermediate (já entendo alguma coisa)</option>
+          <option>Advanced (quero fluência)</option>
         </select>
       </div>
       <div class="field">
@@ -1124,6 +1178,41 @@
 </div>
 
 <script>
+// ── Detecção e troca de idioma ──
+// Só redireciona automaticamente na primeira visita (sem escolha manual salva).
+// Uma vez que o usuário escolhe um idioma (clicando em PT ou JP), essa escolha
+// é respeitada em todas as visitas futuras, sem redirecionamento forçado.
+(function () {
+  const savedLang = localStorage.getItem('speaksquad_lang');
+  const path = window.location.pathname;
+  const onJpVersion = path.startsWith('/jp');
+
+  if (savedLang) {
+    // Usuário já escolheu antes: só redireciona se estiver na página errada
+    if (savedLang === 'ja' && !onJpVersion) {
+      window.location.href = '/jp/';
+    }
+    return;
+  }
+
+  // Primeira visita: detecta idioma do navegador
+  const browserLang = navigator.language || navigator.userLanguage || '';
+  if (browserLang.toLowerCase().startsWith('ja') && !onJpVersion) {
+    localStorage.setItem('speaksquad_lang', 'ja');
+    window.location.href = '/jp/';
+  } else {
+    localStorage.setItem('speaksquad_lang', 'pt-BR');
+  }
+})();
+
+// Salva a escolha manual ao clicar nos links de troca de idioma
+document.querySelectorAll('.lang-switch a, .mobile-lang-switch a').forEach(link => {
+  link.addEventListener('click', function () {
+    const isJp = this.getAttribute('href').includes('/jp');
+    localStorage.setItem('speaksquad_lang', isJp ? 'ja' : 'pt-BR');
+  });
+});
+
 function toggleNav(){const b=document.getElementById('burger'),m=document.getElementById('mobileNav'),o=m.classList.toggle('open');b.classList.toggle('open',o);}
 function closeNav(){document.getElementById('burger').classList.remove('open');document.getElementById('mobileNav').classList.remove('open');}
 window.addEventListener('resize',()=>{if(window.innerWidth>768)closeNav();});
