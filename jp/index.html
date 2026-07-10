@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="SpeakSquad(スピークスクワッド):マインクラフトやフォートナイトをしながら英語を学ぶ、1対1のオンライン英会話。東京拠点。">
+  <meta name="theme-color" content="#00d9ff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>SpeakSquad:ゲームで学ぶ英会話</title>
+  <link rel="alternate" hreflang="ja" href="https://speaksquad.vercel.app/jp/">
+  <link rel="alternate" hreflang="pt-BR" href="https://speaksquad.vercel.app/">
+  <link rel="alternate" hreflang="x-default" href="https://speaksquad.vercel.app/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cyan:    #00d9ff;
+      --magenta: #ff006e;
+      --violet:  #a78bfa;
+      --bg:      #0d1117;
+      --bg2:     #161b22;
+      --bg3:     #1c2333;
+      --border:  #21262d;
+      --border2: #30363d;
+      --text:    #f7fafc;
+      --muted:   #8b949e;
+      --soft:    #f1f5f9;
+      --success: #00d9a3;
+      --warn:    #f0a500;
+      --display: 'Space Mono', 'Noto Sans JP', monospace;
+      --mono:    'IBM Plex Mono', monospace;
+      --body:    'Atkinson Hyperlegible', 'Noto Sans JP', system-ui, sans-serif;
+      --r: 6px;
+      --nav-h: 64px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      scroll-snap-type: y proximity;
+    }
+
+    body {
+      font-family: var(--body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* scroll-snap: forte nas seções curtas, suave nas densas (Features, Fluxo, Preço, FAQ) */
+    .snap-strong { scroll-snap-align: start; scroll-snap-stop: always; }
+    .snap-soft   { scroll-snap-align: start; scroll-snap-stop: normal; }
+
+    /* V2 grid texture */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,217,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,217,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* ── NAV ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      height: var(--nav-h);
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav {
+      max-width: 1160px; margin: 0 auto; height: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; gap: 1.5rem;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.6rem;
+      text-decoration: none; flex-shrink: 0;
+    }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 7px;
+      background: linear-gradient(135deg, var(--cyan), var(--magenta));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-size: 0.75rem; font-weight: 700;
+      color: #0d1117;
+    }
+    .logo-text {
+      font-family: var(--display); font-size: 1.05rem; font-weight: 700;
+      color: var(--text); letter-spacing: 0.5px;
+      text-decoration: underline; text-decoration-color: var(--magenta);
+      text-decoration-thickness: 2px; text-underline-offset: 3px;
+    }
+    .logo-text span { color: var(--cyan); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--body); font-size: 0.875rem; font-weight: 500;
+      color: var(--muted); text-decoration: none; transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta { display: flex; gap: 0.75rem; align-items: center; }
+
+    /* Language switcher */
+    .lang-switch {
+      display: flex; align-items: center; gap: 0.3rem;
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 100px; padding: 0.35rem 0.5rem;
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 600;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .lang-switch a {
+      padding: 0.2rem 0.55rem; border-radius: 100px;
+      color: var(--muted); text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+    .lang-switch a.active { background: var(--cyan); color: #0d1117; }
+    .lang-switch a:not(.active):hover { color: var(--text); }
+    .lang-switch .divider { color: var(--border2); font-size: 0.65rem; }
+
+    .mobile-lang-switch {
+      display: flex; gap: 0.5rem; margin: 1rem 0 0.5rem;
+      padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+    .mobile-lang-switch a {
+      flex: 1; text-align: center; padding: 0.5rem;
+      border-radius: var(--r); font-family: var(--mono);
+      font-size: 0.8rem; font-weight: 600;
+      background: var(--bg3); color: var(--muted); text-decoration: none;
+      border: 1px solid var(--border2);
+    }
+    .mobile-lang-switch a.active { background: var(--cyan); color: #0d1117; border-color: var(--cyan); }
+
+    .burger {
+      display: none; background: none; border: none; cursor: pointer;
+      padding: 0.4rem; color: var(--muted); flex-direction: column; gap: 5px;
+    }
+    .burger span {
+      display: block; width: 22px; height: 2px;
+      background: currentColor; border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-nav {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+      z-index: 890; padding: 1.25rem 1.5rem;
+      flex-direction: column;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      color: var(--muted); text-decoration: none; font-size: 1rem;
+      padding: 0.75rem 0.5rem; border-bottom: 1px solid var(--border);
+      font-weight: 500; transition: color 0.15s;
+    }
+    .mobile-nav a:hover { color: var(--cyan); }
+    .mobile-nav .mob-cta { display: flex; gap: 0.75rem; margin-top: 1rem; }
+    .mob-cta .btn { flex: 1; justify-content: center; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.55rem 1.2rem;
+      font-family: var(--body); font-size: 0.875rem; font-weight: 600;
+      border-radius: var(--r); cursor: pointer; text-decoration: none;
+      border: 1px solid transparent; transition: all 0.2s;
+      white-space: nowrap; -webkit-tap-highlight-color: transparent;
+    }
+    .btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan) 0%, #00a8c8 100%);
+      color: #0d1117; font-weight: 700;
+      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--magenta) 0%, #d1005c 100%);
+      box-shadow: 0 0 28px rgba(255,0,110,0.45);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-outline {
+      background: transparent; color: var(--cyan);
+      border-color: rgba(0,217,255,0.4);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    }
+    .btn-outline:hover {
+      background: rgba(0,217,255,0.12);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 22px rgba(0,217,255,0.3);
+    }
+
+    .btn-ghost {
+      background: transparent; color: var(--muted); border-color: var(--border2);
+      transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    }
+    .btn-ghost:hover {
+      color: var(--magenta); border-color: var(--magenta);
+      background: rgba(255,0,110,0.08);
+    }
+
+    .btn-lg { padding: 0.85rem 2rem; font-size: 1rem; border-radius: 8px; }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 5rem 0; }
+
+    .sec-label {
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+      color: var(--violet); letter-spacing: 2px; text-transform: uppercase;
+      display: block; margin-bottom: 0.75rem;
+    }
+    h2.sec-title {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 700; line-height: 1.15; color: var(--cyan);
+      margin-bottom: 0.75rem; letter-spacing: -0.5px;
+    }
+    .sec-sub {
+      font-size: 1rem; color: var(--soft); line-height: 1.75; max-width: 560px;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100svh;
+      padding: calc(var(--nav-h) + 4rem) 0 4rem;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; top: 10%; right: -5%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,217,255,0.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    #hero::after {
+      content: '';
+      position: absolute; bottom: 5%; left: -10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner { max-width: 720px; position: relative; z-index: 1; }
+
+    /* V1 badge pill */
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.2);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+      color: var(--cyan); letter-spacing: 0.5px; margin-bottom: 2rem;
+    }
+    .hero-badge::before { content: '>_'; opacity: 0.6; margin-right: 0.2rem; }
+
+    h1 {
+      font-family: var(--display); font-weight: 700;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      line-height: 1.1; letter-spacing: -1px; margin-bottom: 1.5rem;
+    }
+    h1 .line1 { display: block; color: var(--text); }
+    h1 .line2 {
+      display: block; color: var(--text);
+    }
+    h1 .lower { color: var(--cyan); text-transform: none; }
+    h1 .accent { color: var(--magenta); }
+
+    .hero-desc {
+      font-size: 1.05rem; color: var(--soft);
+      max-width: 500px; line-height: 1.75; margin-bottom: 2.25rem;
+    }
+
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+    /* V2 CTA wording, V1 note style */
+    .hero-note {
+      font-size: 0.8rem; color: var(--muted); margin-top: 1rem;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .hero-note i { color: var(--success); font-size: 0.7rem; }
+
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3.5rem; flex-wrap: wrap;
+    }
+    .hstat-val {
+      font-family: var(--mono); font-size: 1.8rem; font-weight: 600;
+      color: var(--cyan); display: block; line-height: 1;
+    }
+    .hstat-lbl { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* V1 game pills */
+    .hero-games {
+      display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem;
+    }
+    .game-pill {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 100px; padding: 0.45rem 1rem;
+      font-size: 0.83rem; font-weight: 500; color: var(--muted);
+    }
+    .game-pill i { color: var(--cyan); font-size: 0.8rem; }
+
+    /* ── PROBLEM ── */
+    #problem {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; margin-top: 2.5rem;
+    }
+    .problem-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem;
+      position: relative; overflow: hidden;
+    }
+    .problem-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; width: 3px; bottom: 0;
+      background: rgba(239,68,68,0.5);
+    }
+    .problem-card.positive::before { background: var(--cyan); }
+    .problem-card h3 {
+      font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem;
+    }
+    .problem-card p { font-size: 0.875rem; color: var(--soft); line-height: 1.7; }
+
+    /* ── MÉTODO (motivação) ── */
+    #metodo {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      display: flex; align-items: center; min-height: 60svh;
+    }
+    #metodo .wrap { max-width: 760px; }
+    #metodo .sec-sub { max-width: 100%; font-size: 1.02rem; }
+    #metodo .sec-sub + .sec-sub { margin-top: 1.1rem; }
+
+    /* ── FEATURES (V1 style) ── */
+    #features { background: var(--bg); }
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem; margin-top: 2.5rem;
+    }
+    .feat-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.75rem;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .feat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--violet));
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .feat-card:hover {
+      border-color: rgba(0,217,255,0.3);
+      box-shadow: 0 0 30px rgba(0,217,255,0.07);
+      transform: translateY(-3px);
+    }
+    .feat-card:hover::before { opacity: 1; }
+    .feat-icon {
+      width: 44px; height: 44px;
+      background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.15);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: var(--cyan); margin-bottom: 1.1rem;
+    }
+    /* Ícones alternados: cyan, magenta, violet */
+    .feat-card:nth-child(3n+2) .feat-icon {
+      background: rgba(255,0,110,0.08); border-color: rgba(255,0,110,0.18);
+      color: var(--magenta);
+    }
+    .feat-card:nth-child(3n+3) .feat-icon {
+      background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.2);
+      color: var(--violet);
+    }
+    .feat-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+    .feat-card p { font-size: 0.875rem; color: var(--soft); line-height: 1.7; }
+
+    /* ── GAME MODES SIGNATURE ── */
+    #modos { background: var(--bg2); border-top: 1px solid var(--border); }
+    .modes-intro { max-width: 600px; margin-bottom: 2.5rem; }
+    .modes-grid {
+      display: grid; grid-template-columns: 170px 1fr 1fr 1fr;
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    .mode-col { background: var(--bg3); display: flex; flex-direction: column; }
+    .mode-col.labels { background: var(--bg2); }
+    .mode-header { padding: 1.25rem 1.25rem 1rem; border-bottom: 1px solid var(--border); }
+    .mode-header.featured { background: rgba(0,217,255,0.04); }
+    .mode-badge {
+      font-family: var(--mono); font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 0.18rem 0.55rem; border-radius: 100px;
+      margin-bottom: 0.7rem; display: inline-block;
+    }
+    .badge-mc  { background: rgba(34,197,94,0.12); color: #4ade80; }
+    .badge-fn  { background: rgba(240,165,0,0.12); color: #fbbf24; }
+    .badge-pvp { background: rgba(255,0,110,0.12); color: #fb7185; }
+    .mode-header h3 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
+    .mode-header p { font-size: 0.78rem; color: var(--muted); }
+    .mode-rows { flex: 1; }
+    .mode-row {
+      padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 0.2rem;
+    }
+    .mode-row:last-child { border-bottom: none; }
+    .mode-rlabel {
+      font-family: var(--mono); font-size: 0.62rem; font-weight: 500;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .mode-col.labels .mode-row { justify-content: center; }
+    .mode-col.labels .mode-rlabel {
+      font-size: 0.8rem; color: var(--soft); text-transform: none;
+      letter-spacing: 0; font-weight: 600; font-family: var(--body);
+    }
+    .mode-rval {
+      font-size: 0.82rem; color: var(--muted); font-weight: 500;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .dot-g { background: var(--success); }
+    .dot-y { background: var(--warn); }
+    .dot-r { background: #ef4444; }
+    .modes-note {
+      margin-top: 1.5rem; padding: 1rem 1.25rem;
+      background: rgba(0,217,255,0.04); border: 1px solid rgba(0,217,255,0.12);
+      border-radius: var(--r); font-size: 0.875rem; color: var(--muted); line-height: 1.7;
+    }
+    .modes-note strong { color: var(--cyan); }
+
+    /* ── FLUXO DA AULA (3 partes) ── */
+    #fluxo { background: var(--bg2); border-top: 1px solid var(--border); }
+    .fluxo-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem; margin-top: 2.5rem;
+    }
+    .fluxo-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.75rem;
+      position: relative; overflow: hidden;
+    }
+    .fluxo-card::before {
+      content: attr(data-num);
+      position: absolute; top: -0.5rem; right: 0.5rem;
+      font-family: var(--display); font-size: 4.5rem; font-weight: 700;
+      color: rgba(0,217,255,0.06); line-height: 1; pointer-events: none;
+    }
+    .fluxo-tag {
+      font-family: var(--mono); font-size: 0.68rem; font-weight: 600;
+      color: var(--magenta); letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 0.75rem; display: block;
+    }
+    .fluxo-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 0.6rem; }
+    .fluxo-card p { font-size: 0.875rem; color: var(--soft); line-height: 1.75; position: relative; z-index: 1; }
+
+    /* ── AULA GRÁTIS (4 passos) ── */
+    #gratis { background: var(--bg); }
+    .gratis-banner {
+      background: linear-gradient(135deg, rgba(0,217,255,0.06) 0%, rgba(124,58,237,0.05) 100%);
+      border: 1px solid rgba(0,217,255,0.18);
+      border-radius: 10px; padding: 1rem 1.5rem;
+      font-size: 0.9rem; color: var(--soft);
+      margin-bottom: 2.5rem; margin-top: -0.5rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .gratis-banner i { color: var(--success); font-size: 0.9rem; flex-shrink: 0; }
+    .gratis-steps {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .gratis-step {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.5rem 1.25rem;
+    }
+    .gratis-num {
+      font-family: var(--mono); font-size: 0.7rem; font-weight: 600;
+      color: var(--magenta); letter-spacing: 1px; margin-bottom: 0.6rem; display: block;
+    }
+    .gratis-step h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+    .gratis-step p { font-size: 0.83rem; color: var(--soft); line-height: 1.65; }
+
+    /* ── REQUISITOS ── */
+    #requisitos { background: var(--bg2); border-top: 1px solid var(--border); }
+    .req-list {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.9rem; margin-top: 2.5rem;
+    }
+    .req-item {
+      display: flex; align-items: center; gap: 0.9rem;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.1rem 1.25rem;
+    }
+    .req-icon {
+      width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(0,217,255,0.08); border: 1px solid rgba(0,217,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--cyan); font-size: 1rem;
+    }
+    .req-item span { font-size: 0.9rem; color: var(--soft); font-weight: 500; }
+    .req-item .req-opt { font-size: 0.72rem; color: var(--muted); display: block; margin-top: 0.1rem; font-weight: 400; }
+
+    /* ── FAQ ── */
+    #faq { background: var(--bg); }
+    .faq-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .faq-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+    }
+    .faq-q {
+      width: 100%; text-align: left; background: none; border: none;
+      padding: 1.1rem 1.4rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      font-family: var(--body); font-size: 0.95rem; font-weight: 600; color: var(--text);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .faq-q i { color: var(--cyan); font-size: 0.85rem; transition: transform 0.25s; flex-shrink: 0; }
+    .faq-item.open .faq-q i { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+    }
+    .faq-a-inner { padding: 0 1.4rem 1.25rem; font-size: 0.875rem; color: var(--soft); line-height: 1.75; }
+    .faq-item.open .faq-a { max-height: 300px; }
+
+    /* ── HOW (V1 — 3 cards grid) ── */
+    #como { background: var(--bg); }
+    .steps-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem; margin-top: 2.5rem;
+    }
+    .step {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 2rem 1.5rem; text-align: center;
+    }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      font-family: var(--display); font-size: 1.1rem; font-weight: 700;
+      color: #0d1117; margin-bottom: 1.25rem;
+      box-shadow: 0 0 24px rgba(0,217,255,0.25);
+    }
+    .step h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+    .step p { font-size: 0.875rem; color: var(--soft); line-height: 1.65; }
+
+    /* ── SOBRE (V2) ── */
+    #sobre { background: var(--bg2); border-top: 1px solid var(--border); }
+    .sobre-grid {
+      display: grid; grid-template-columns: 1fr 1.4fr;
+      gap: 3.5rem; align-items: start; margin-top: 2.5rem;
+    }
+    .sobre-visual {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 0.75rem;
+    }
+    .sobre-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--magenta), var(--violet));
+      display: flex; align-items: center; justify-content: center; font-size: 2rem;
+    }
+    .sobre-visual .s-name { font-weight: 700; color: var(--text); font-size: 1.05rem; }
+    .sobre-visual .s-role { font-size: 0.8rem; color: var(--muted); }
+    .sobre-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-top: 0.25rem; }
+    .sobre-tag {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 100px; padding: 0.22rem 0.7rem;
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .sobre-content p { font-size: 0.975rem; color: var(--soft); line-height: 1.8; margin-bottom: 1.1rem; }
+    .sobre-content p:last-of-type { margin-bottom: 0; }
+
+    /* ── PRICING (V1 — 3 cards, V2 tom) ── */
+    #preco { background: var(--bg); }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem; margin-top: 2.5rem;
+    }
+    .price-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem 1.75rem;
+      display: flex; flex-direction: column;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .price-card.featured {
+      border-color: var(--cyan);
+      box-shadow: 0 0 40px rgba(0,217,255,0.1);
+    }
+    .price-card.featured::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,217,255,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .price-tag {
+      position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      color: #0d1117; font-size: 0.7rem; font-weight: 700;
+      padding: 0.28rem 1rem; border-radius: 0 0 6px 6px;
+      letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;
+    }
+    .price-name {
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+      color: var(--magenta); text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 1rem; margin-top: 0.5rem;
+    }
+    .featured .price-name { margin-top: 1.25rem; }
+    .price-amount { display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 0.3rem; }
+    .price-val {
+      font-family: var(--mono); font-size: 2.6rem; font-weight: 600;
+      color: var(--text); letter-spacing: -1px; line-height: 1;
+    }
+    .price-unit { font-size: 0.875rem; color: var(--muted); }
+    .price-per { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .price-per strong { color: var(--success); }
+    .price-per .save-tag { color: var(--magenta); font-weight: 600; }
+    .price-list { list-style: none; flex: 1; margin-bottom: 1.5rem; }
+    .price-list li {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      font-size: 0.875rem; color: var(--muted);
+      padding: 0.45rem 0; border-bottom: 1px solid var(--border);
+    }
+    .price-list li:last-child { border-bottom: none; }
+    .price-list li i { color: var(--success); font-size: 0.72rem; margin-top: 0.22rem; flex-shrink: 0; }
+    /* V2 honest footer */
+    .price-footer {
+      margin-top: 1rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem; color: var(--muted); line-height: 1.65;
+    }
+    .price-card .btn { width: 100%; justify-content: center; }
+
+    /* ── CTA FINAL (V2 wording) ── */
+    #cta { background: var(--bg2); border-top: 1px solid var(--border); text-align: center; }
+    #cta .wrap { max-width: 640px; }
+    #cta h2 {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700; color: var(--text);
+      letter-spacing: -0.5px; margin-bottom: 1rem;
+    }
+    #cta p { font-size: 1rem; color: var(--soft); margin-bottom: 2rem; line-height: 1.75; }
+    #cta .fine { font-size: 0.8rem; color: var(--muted); margin-top: 1.25rem; line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; text-align: center; }
+    footer p { font-size: 0.82rem; color: var(--muted); }
+    footer a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+    footer a:hover { color: var(--magenta); }
+
+    /* ── MODALS (V1 full signup + login) ── */
+    .overlay {
+      display: none; position: fixed; inset: 0; z-index: 950;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .overlay.open { display: flex; }
+    .modal {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 2rem;
+      width: 100%; max-width: 430px;
+      position: relative; max-height: 90svh; overflow-y: auto;
+    }
+    .modal-x {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: none; color: var(--muted);
+      font-size: 1.2rem; cursor: pointer; transition: color 0.15s;
+    }
+    .modal-x:hover { color: var(--text); }
+    .modal h2 {
+      font-family: var(--display); font-size: 1.15rem; font-weight: 700;
+      color: var(--text); margin-bottom: 1.5rem;
+    }
+    .modal h2 span { color: var(--cyan); }
+    .field { margin-bottom: 1.1rem; }
+    .field label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); margin-bottom: 0.4rem;
+      text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .field input, .field select {
+      width: 100%; padding: 0.72rem 0.9rem;
+      background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: var(--r); color: var(--text);
+      font-family: var(--body); font-size: 0.9rem;
+      transition: border-color 0.15s, box-shadow 0.15s; -webkit-appearance: none;
+    }
+    .field input:focus, .field select:focus {
+      outline: none; border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0,217,255,0.1);
+    }
+    .field input::placeholder { color: var(--muted); opacity: 1; }
+    .check-row { display: flex; gap: 1.5rem; }
+    .check-item { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; }
+    .check-item input { width: 16px; height: 16px; accent-color: var(--magenta); cursor: pointer; }
+    .check-item span { font-size: 0.9rem; color: var(--muted); }
+    .modal-btn {
+      width: 100%; padding: 0.82rem;
+      background: linear-gradient(135deg, var(--cyan), #00a8c8);
+      color: #0d1117; border: none; border-radius: var(--r);
+      font-family: var(--body); font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .modal-btn:hover { box-shadow: 0 0 24px rgba(0,217,255,0.4); transform: translateY(-1px); }
+    .modal-btn:active { transform: translateY(0); }
+    .modal-foot {
+      text-align: center; font-size: 0.82rem;
+      color: var(--muted); margin-top: 1rem;
+    }
+    .modal-foot a { color: var(--cyan); text-decoration: none; font-weight: 600; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .burger { display: flex; }
+    }
+    @media (max-width: 900px) {
+      .modes-grid { grid-template-columns: 1fr; }
+      .mode-col.labels { display: none; }
+      .sobre-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    @media (max-width: 680px) {
+      /* V1 pricing — colapsa para 1 coluna */
+      .pricing-grid { grid-template-columns: 1fr; max-width: 380px; }
+      .problem-grid { grid-template-columns: 1fr; }
+      section { padding: 3.5rem 0; }
+      .fluxo-grid { grid-template-columns: 1fr; }
+      .gratis-steps { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .req-list { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header>
+  <nav>
+    <a href="#" class="logo">
+      <div class="logo-mark">SS</div>
+      <span class="logo-text">Speak<span>Squad</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">特徴</a></li>
+      <li><a href="#metodo">メソッド</a></li>
+      <li><a href="#como">流れ</a></li>
+      <li><a href="#preco">料金</a></li>
+      <li><a href="#faq">よくある質問</a></li>
+    </ul>
+    <div class="nav-cta">
+      <div class="lang-switch" aria-label="言語">
+        <a href="/">PT</a>
+        <span class="divider">|</span>
+        <a href="/jp/" class="active">JP</a>
+      </div>
+      <button class="btn btn-ghost" onclick="open_m('login')">ログイン</button>
+      <button class="btn btn-primary" onclick="open_m('signup')">無料体験レッスン</button>
+    </div>
+    <button class="burger" id="burger" onclick="toggleNav()" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#features" onclick="closeNav()">SpeakSquadの特徴</a>
+  <a href="#metodo" onclick="closeNav()">メソッド</a>
+  <a href="#como" onclick="closeNav()">レッスンの流れ</a>
+  <a href="#preco" onclick="closeNav()">料金</a>
+  <a href="#faq" onclick="closeNav()">よくある質問</a>
+  <div class="mob-cta">
+    <button class="btn btn-ghost" onclick="open_m('login');closeNav()">ログイン</button>
+    <button class="btn btn-primary" onclick="open_m('signup');closeNav()">無料体験</button>
+  </div>
+  <div class="mobile-lang-switch">
+    <a href="/">🇧🇷 Português</a>
+    <a href="/jp/" class="active">日本語</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero" class="snap-strong">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-badge">LEVEL UP YOUR ENGLISH</div>
+      <h1>
+        <span class="line1"><span class="accent">ゲーム</span><span class="lower">をしながら</span></span>
+        <span class="line2">英語が話せるようになる</span>
+      </h1>
+      <p class="hero-desc">
+        マインクラフトやフォートナイトを使った、1対1のオンライン英会話レッスンです。日本の文化や考え方を理解した講師が、お子様から大人まで、一人ひとりのペースに合わせて指導します。間違えることを恐れずに話せる環境を大切にしています。
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary btn-lg" onclick="open_m('signup')">
+          無料体験レッスンを予約
+        </button>
+        <a href="#metodo" class="btn btn-outline btn-lg">メソッドを見る</a>
+      </div>
+      <p class="hero-note">
+        <i class="fas fa-check-circle"></i>
+        体験レッスンは事前登録なしで気軽にお試しいただけます。
+      </p>
+      <div class="hero-games">
+        <span class="game-pill"><i class="fas fa-cube"></i> マインクラフト</span>
+        <span class="game-pill"><i class="fas fa-crosshairs"></i> フォートナイト</span>
+        <span class="game-pill"><i class="fas fa-video"></i> Zoom使用</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat">
+          <span class="hstat-val">1対1</span>
+          <span class="hstat-lbl">専属講師制</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-val">50分</span>
+          <span class="hstat-lbl">じっくり学べる長さ</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-val">¥0</span>
+          <span class="hstat-lbl">体験レッスン料金</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTODO -->
+<section id="metodo" class="snap-strong">
+  <div class="wrap">
+    <span class="sec-label">メソッド</span>
+    <h2 class="sec-title">このメソッドがうまくいく理由</h2>
+    <p class="sec-sub">興味のないことを無理に続けるのは、ストレスになり、途中でやめてしまいがちです。反対に、もともと好きなことなら、習慣として自然に続けられます。</p>
+    <p class="sec-sub">SpeakSquadは、お子様や大人の方がすでに好きな「ゲーム」を通して、英会話力を伸ばしていくメソッドです。</p>
+  </div>
+</section>
+
+<!-- FEATURES V1 -->
+<section id="features" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">SpeakSquadの特徴</span>
+    <h2 class="sec-title">覚えるのではなく、話しながら身につける</h2>
+    <p class="sec-sub">ゲームの中では、英語を使う必然性が自然に生まれます。だからこそ、無理なく身についていきます。</p>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fas fa-user-check"></i></div>
+        <h3>専属講師制</h3>
+        <p>生徒様の進み具合、レベル、好きなゲームを把握した講師が担当します。日本語でのコミュニケーションも可能なので、お子様にも保護者様にも安心していただけます。</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fas fa-comments"></i></div>
+        <h3>実践的な会話力</h3>
+        <p>文法を覚え直すだけの授業ではありません。ゲーム内で指示を出す、戦略を説明する、状況に反応するなど、実際の場面で使う英語を練習します。</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>学習の記録</h3>
+        <p>レッスンごとに記録が残ります。講師が使った単語や練習が必要なポイントをまとめてお伝えするので、何を学んだかがはっきり分かります。</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>安心できる環境</h3>
+        <p>間違えても大丈夫な、リラックスした雰囲気の中で英語を話す練習ができます。</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fas fa-gamepad"></i></div>
+        <h3>楽しさも大切に</h3>
+        <p>英語を楽しく学べることも大事な目的の一つです。講師自身もゲームが好きなので、レッスン中の楽しさも自然に生まれます。</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fas fa-bolt"></i></div>
+        <h3>シンプルな始め方</h3>
+        <p>会員登録、クレジット購入(1クレジット=1レッスン)、予約の3ステップだけ。面倒な手続きはありません。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLUXO DA AULA -->
+<section id="fluxo" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">レッスンの構成</span>
+    <h2 class="sec-title">レッスンの流れ</h2>
+    <p class="sec-sub">1回のレッスンは3つのパートに分かれています。ただ「入ってゲームをする」だけではありません。</p>
+    <div class="fluxo-grid">
+      <div class="fluxo-card" data-num="1">
+        <span class="fluxo-tag">パート1</span>
+        <h3>イントロダクション</h3>
+        <p>落ち着いた雰囲気での導入トーク。前回の復習や、そのレッスンで取り組む内容の確認に使うことが多いです。</p>
+      </div>
+      <div class="fluxo-card" data-num="2">
+        <span class="fluxo-tag">パート2</span>
+        <h3>ゲームプレイ</h3>
+        <p>ゲームをプレイしながら、講師がその場の状況に合わせて自然な表現やフレーズを教え、生徒様が英語で表現できるようサポートします。</p>
+      </div>
+      <div class="fluxo-card" data-num="3">
+        <span class="fluxo-tag">パート3</span>
+        <h3>振り返り</h3>
+        <p>レッスン中に使った単語やフレーズを復習します。難しかった部分を中心に確認し、自信を持って終えられるようにします。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AULA GRÁTIS -->
+<section id="como" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">ご利用の流れ</span>
+    <h2 class="sec-title">初回レッスンは無料です</h2>
+    <p class="sec-sub">体験後にしつこい勧誘は一切ありません。お気軽にお試しください。迷惑メールもお送りしません。</p>
+    <div class="gratis-banner">
+      <i class="fas fa-check-circle"></i>
+      会員登録からレッスン予約まで、数分で完了します。
+    </div>
+    <div class="gratis-steps">
+      <div class="gratis-step">
+        <span class="gratis-num">STEP 1</span>
+        <h3>会員登録</h3>
+        <p>お名前、メールアドレス、パスワードを入力してアカウントを作成します。</p>
+      </div>
+      <div class="gratis-step">
+        <span class="gratis-num">STEP 2</span>
+        <h3>プロフィール入力</h3>
+        <p>好きなゲームを選び、簡単な自己紹介をご記入ください。</p>
+      </div>
+      <div class="gratis-step">
+        <span class="gratis-num">STEP 3</span>
+        <h3>レッスン予約</h3>
+        <p>ご都合の良い日時を選んで予約します。</p>
+      </div>
+      <div class="gratis-step">
+        <span class="gratis-num">STEP 4</span>
+        <h3>レッスン開始</h3>
+        <p>マイページまたはメールのリンクからビデオ通話に参加するだけ。これで準備完了です。無料体験レッスンをお楽しみください。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING V1 layout, V2 tom -->
+<section id="preco" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">料金</span>
+    <h2 class="sec-title">シンプルで分かりやすい料金体系</h2>
+    <p class="sec-sub">1クレジット=50分のレッスン1回。必要な分だけ、必要な時にご購入いただけます。</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">単発</div>
+        <div class="price-amount">
+          <span class="price-val">¥2,000</span>
+        </div>
+        <div class="price-per">1レッスンあたり</div>
+        <ul class="price-list">
+          <li><i class="fas fa-check"></i> 50分レッスン1回</li>
+          <li><i class="fas fa-check"></i> 有効期限なし</li>
+          <li><i class="fas fa-check"></i> 自由な日程調整</li>
+        </ul>
+        <button class="btn btn-outline" onclick="open_m('signup')">購入する</button>
+        <div class="price-footer">契約の縛りなし。<br>入会金なし。</div>
+      </div>
+      <div class="price-card featured">
+        <div class="price-tag">一番人気</div>
+        <div class="price-name">5回パック</div>
+        <div class="price-amount">
+          <span class="price-val">¥8,500</span>
+        </div>
+        <div class="price-per"><strong>1レッスン¥1,700</strong>、<span class="save-tag">15%お得</span></div>
+        <ul class="price-list">
+          <li><i class="fas fa-check"></i> 50分レッスン5回分</li>
+          <li><i class="fas fa-check"></i> 有効期限なし</li>
+          <li><i class="fas fa-check"></i> 自由な日程調整</li>
+          <li><i class="fas fa-check"></i> 予約の優先枠</li>
+        </ul>
+        <button class="btn btn-primary" onclick="open_m('signup')">購入する</button>
+        <div class="price-footer">契約の縛りなし。<br>まずは無料体験からどうぞ。</div>
+      </div>
+      <div class="price-card">
+        <div class="price-name">10回パック</div>
+        <div class="price-amount">
+          <span class="price-val">¥14,000</span>
+        </div>
+        <div class="price-per"><strong>1レッスン¥1,400</strong>、<span class="save-tag">30%お得</span></div>
+        <ul class="price-list">
+          <li><i class="fas fa-check"></i> 50分レッスン10回分</li>
+          <li><i class="fas fa-check"></i> 有効期限なし</li>
+          <li><i class="fas fa-check"></i> 自由な日程調整</li>
+          <li><i class="fas fa-check"></i> 予約の優先枠</li>
+        </ul>
+        <button class="btn btn-outline" onclick="open_m('signup')">購入する</button>
+        <div class="price-footer">契約の縛りなし。<br>追加費用は一切ありません。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REQUISITOS -->
+<section id="requisitos" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">事前準備</span>
+    <h2 class="sec-title">ご用意いただくもの</h2>
+    <p class="sec-sub">難しいものは何もありません。おそらくすでにお持ちのものばかりです。</p>
+    <div class="req-list">
+      <div class="req-item">
+        <div class="req-icon"><i class="fas fa-gamepad"></i></div>
+        <span>インストール済みのゲーム<span class="req-opt">お使いのPCやゲーム機で最新版に</span></span>
+      </div>
+      <div class="req-item">
+        <div class="req-icon"><i class="fas fa-video"></i></div>
+        <span>Zoom<span class="req-opt">講師とのビデオ通話に使用します</span></span>
+      </div>
+      <div class="req-item">
+        <div class="req-icon"><i class="fas fa-desktop"></i></div>
+        <span>PC・タブレット・スマートフォン<span class="req-opt">いずれか1台でOK</span></span>
+      </div>
+      <div class="req-item">
+        <div class="req-icon"><i class="fas fa-headset"></i></div>
+        <span>マイク付きヘッドセット<span class="req-opt">必須ではありませんが推奨します</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE V2 -->
+<section id="sobre" class="snap-strong">
+  <div class="wrap">
+    <span class="sec-label">SpeakSquadについて</span>
+    <h2 class="sec-title">SpeakSquadとは</h2>
+    <div class="sobre-grid">
+      <div class="sobre-visual">
+        <div class="sobre-avatar">🎮</div>
+        <div class="s-name">Hugo(ヒューゴ)</div>
+        <div class="s-role">SpeakSquad創設者</div>
+      </div>
+      <div class="sobre-content">
+        <p>SpeakSquad創設者のヒューゴです。ゲームを使った英会話レッスンを通して、多くの生徒様を見てきた中で、あるもったいなさに気づきました。ゲーム好きで英語を学びたい生徒様が、「講師と一緒にゲームができて楽しかった」という感想だけでレッスンを終えてしまうケースです。それ自体は悪いことではなく、このメソッドの目的の一つでもあります。ただ、私たちが本当に目指しているのは、生徒様ご本人と保護者様が望む、実際の学習の成果です。</p>
+        <p>他にも気づいた点があります。レッスンの方向性が定まっていないと、学習効果が薄れてしまうことがあります。また、担当講師が頻繁に変わることは、特に始めたばかりの生徒様にとって良い方法とは言えません。さらに、ご兄弟など複数のお子様が同じレッスンを受けられる形式もよく見られますが、その場合、レッスン中にお子様同士が母国語で会話してしまうことが少なくありません。</p>
+        <p>SpeakSquadは、すでに市場にあるゲームを使った英会話というメソッドをベースに、そこに欠けていたものを加えました。同じ講師による継続的な指導、英語学習を意識して選ばれるゲームモード、そして一人ひとりに合わせた本当の意味での対応です。</p>
+        <p>レッスンは今も私自身が担当しています。外部委託はしていません(将来的には、このメソッドに基づいて新しい講師を育成することも考えています)。アプリでもAIでもなく、生徒様の成長を大切に思い、良いレッスンとは何かをしっかりと考えている一人の人間がここにいます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL V2 -->
+<section id="cta" class="snap-strong">
+  <div class="wrap">
+    <span class="sec-label" style="justify-content:center;display:flex;">気になった方へ</span>
+    <h2>まずは無料の<br>体験レッスンから</h2>
+    <p>面倒な登録は必要ありません。追加料金の心配もありません。<br>50分間の本物のレッスンを受けてから、じっくりご検討ください。</p>
+    <button class="btn btn-primary btn-lg" onclick="open_m('signup')">無料体験レッスンを予約</button>
+    <p class="fine">お子様から大人の方までご利用いただけます。<br>Zoom使用・マインクラフトまたはフォートナイト・日本時間対応</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="snap-soft">
+  <div class="wrap">
+    <span class="sec-label">よくある質問</span>
+    <h2 class="sec-title">FAQ</h2>
+    <p class="sec-sub">こちらにない質問は、体験レッスン前にお気軽にお問い合わせください。</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          子供が英語を話せなくても大丈夫ですか?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">はい、大丈夫です。英語が初めての方から上級者まで対応しています。体験レッスンで現在のレベルを確認し、そこからペースを合わせていきます。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          クレジットに有効期限はありますか?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">いいえ、有効期限はありません。一度購入したクレジットは、ご自身のペースでいつでもご利用いただけます。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          予約したレッスンのキャンセルや変更はできますか?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">はい、予約時にご案内する期限内であれば可能です。直前のキャンセルの場合、クレジットを消費させていただく場合があります。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          兄弟や友達と一緒にレッスンを受けられますか?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">基本的には1対1のレッスンをおすすめしています。複数人で受講すると、レッスン中に生徒様同士で日本語での会話が増えてしまい、英語を話す時間が短くなる傾向があるためです。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          体験レッスン前にゲームを購入しておく必要がありますか?
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">はい、レッスンはゲーム内で行うため、マインクラフトまたはフォートナイトをお使いの端末にインストールし、起動できる状態にしておいてください。</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          お支払い方法を教えてください。
+          <i class="fas fa-plus"></i>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Stripe(ストライプ)を利用しており、通信は完全に暗号化されています。クレジットカード情報がSpeakSquad側に保存されることはありません。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p style="margin-bottom:0.35rem;">© 2025 SpeakSquad &nbsp;·&nbsp; <a href="#">プライバシーポリシー</a> &nbsp;·&nbsp; <a href="#">利用規約</a> &nbsp;·&nbsp; <a href="#">お問い合わせ</a></p>
+    <p>Level Up Your English</p>
+  </div>
+</footer>
+
+<!-- MODAL SIGNUP (V1 full) -->
+<div class="overlay" id="overlay-signup" onclick="oc(event,'signup')">
+  <div class="modal">
+    <button class="modal-x" onclick="close_m('signup')">&times;</button>
+    <h2>SpeakSquadに<span>会員登録</span></h2>
+    <form onsubmit="e=>{e.preventDefault();close_m('signup');}">
+      <div class="field"><label>お名前</label><input type="text" placeholder="お名前を入力" required autocomplete="name"></div>
+      <div class="field"><label>メールアドレス</label><input type="email" placeholder="you@example.com" required autocomplete="email"></div>
+      <div class="field"><label>パスワード</label><input type="password" placeholder="8文字以上で入力" required minlength="8" autocomplete="new-password"></div>
+      <div class="field">
+        <label>英語レベル</label>
+        <select required>
+          <option value="">選択してください</option>
+          <option>初級(全くの初心者)</option>
+          <option>中級(ある程度分かる)</option>
+          <option>上級(流暢を目指したい)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>好きなゲーム</label>
+        <div class="check-row">
+          <label class="check-item"><input type="checkbox" value="minecraft"><span>マインクラフト</span></label>
+          <label class="check-item"><input type="checkbox" value="fortnite"><span>フォートナイト</span></label>
+        </div>
+      </div>
+      <button type="submit" class="modal-btn">登録する</button>
+    </form>
+    <p class="modal-foot">すでにアカウントをお持ちですか? <a href="#" onclick="sw('signup','login')">ログイン</a></p>
+  </div>
+</div>
+
+<!-- MODAL LOGIN (V1) -->
+<div class="overlay" id="overlay-login" onclick="oc(event,'login')">
+  <div class="modal">
+    <button class="modal-x" onclick="close_m('login')">&times;</button>
+    <h2>SpeakSquadに<span>ログイン</span></h2>
+    <form onsubmit="e=>{e.preventDefault();close_m('login');}">
+      <div class="field"><label>メールアドレス</label><input type="email" placeholder="you@example.com" required autocomplete="email"></div>
+      <div class="field"><label>パスワード</label><input type="password" placeholder="••••••••" required autocomplete="current-password"></div>
+      <button type="submit" class="modal-btn">ログイン</button>
+    </form>
+    <p class="modal-foot">アカウントをお持ちでない方は <a href="#" onclick="sw('login','signup')">新規登録</a></p>
+  </div>
+</div>
+
+<script>
+// ── Detecção e troca de idioma ──
+// Só redireciona automaticamente na primeira visita (sem escolha manual salva).
+// Uma vez que o usuário escolhe um idioma (clicando em PT ou JP), essa escolha
+// é respeitada em todas as visitas futuras, sem redirecionamento forçado.
+(function () {
+  const savedLang = localStorage.getItem('speaksquad_lang');
+  const path = window.location.pathname;
+  const onJpVersion = path.startsWith('/jp');
+
+  if (savedLang) {
+    // Usuário já escolheu antes: só redireciona se estiver na página errada
+    if (savedLang === 'ja' && !onJpVersion) {
+      window.location.href = '/jp/';
+    }
+    return;
+  }
+
+  // Primeira visita: detecta idioma do navegador
+  const browserLang = navigator.language || navigator.userLanguage || '';
+  if (browserLang.toLowerCase().startsWith('ja') && !onJpVersion) {
+    localStorage.setItem('speaksquad_lang', 'ja');
+    window.location.href = '/jp/';
+  } else {
+    localStorage.setItem('speaksquad_lang', 'pt-BR');
+  }
+})();
+
+// Salva a escolha manual ao clicar nos links de troca de idioma
+document.querySelectorAll('.lang-switch a, .mobile-lang-switch a').forEach(link => {
+  link.addEventListener('click', function () {
+    const isJp = this.getAttribute('href').includes('/jp');
+    localStorage.setItem('speaksquad_lang', isJp ? 'ja' : 'pt-BR');
+  });
+});
+
+function toggleNav(){const b=document.getElementById('burger'),m=document.getElementById('mobileNav'),o=m.classList.toggle('open');b.classList.toggle('open',o);}
+function closeNav(){document.getElementById('burger').classList.remove('open');document.getElementById('mobileNav').classList.remove('open');}
+window.addEventListener('resize',()=>{if(window.innerWidth>768)closeNav();});
+function open_m(id){document.getElementById('overlay-'+id)?.classList.add('open');document.body.style.overflow='hidden';}
+function close_m(id){document.getElementById('overlay-'+id)?.classList.remove('open');document.body.style.overflow='';}
+function oc(e,id){if(e.target===e.currentTarget)close_m(id);}
+function sw(f,t){close_m(f);setTimeout(()=>open_m(t),120);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));document.body.style.overflow='';}});
+
+function toggleFaq(btn){
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
